@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* Modified Glassmorphism for Product Cards */
+    .glass-card {
+        @apply bg-white/90 backdrop-blur-lg border border-slate-200/50 shadow-premium rounded-[2rem] transition-all duration-500 ease-in-out;
+    }
+    
+    .glass-card:hover {
+        @apply -translate-y-3 shadow-premium-hover border-brand-secondary/30 scale-[1.02];
+    }
+
+    /* Standard Button Components */
+    .btn-base {
+        @apply flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold tracking-tight transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed select-none;
+    }
+
+    .btn-primary {
+        @apply btn-base bg-gradient-to-r from-brand-secondary to-brand-secondary-dark text-white shadow-premium hover:shadow-premium-hover border-b-4 border-blue-700 hover:border-blue-800 hover:-translate-y-0.5 active:translate-y-0 active:border-b-0;
+    }
+
+    .btn-search-inline {
+        @apply absolute right-2 top-2 bottom-2 px-6 rounded-xl bg-brand-secondary text-white font-bold hover:bg-brand-secondary-dark transition-all duration-300 active:scale-95 flex items-center justify-center;
+    }
+
+    .btn-outline {
+        @apply btn-base border-2 border-slate-200 text-slate-600 bg-white/40 backdrop-blur-sm hover:border-brand-secondary hover:text-brand-secondary hover:bg-white/60 shadow-sm hover:shadow-md;
+    }
+
+    .btn-danger {
+        @apply btn-base bg-gradient-to-r from-brand-danger to-red-600 text-white shadow-premium hover:shadow-premium-hover border-b-4 border-red-700 hover:border-red-800 hover:-translate-y-0.5 active:translate-y-0 active:border-b-0;
+    }
+
+    /* High-Level Form Inputs */
+    .input-field {
+        @apply w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-brand-secondary/10 focus:border-brand-secondary outline-none transition-all duration-300 placeholder:text-slate-400 shadow-sm;
+    }
+
+    /* Status Badges */
+    .badge {
+        @apply px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+    }
+    .badge-success { @apply badge bg-green-100 text-green-700; }
+    .badge-warning { @apply badge bg-amber-100 text-amber-700; }
+    .badge-danger { @apply badge bg-red-100 text-red-700; }
+
+    /* Modified Button Animation */
+    .btn-animated {
+        @apply relative overflow-hidden transition-all duration-300 active:scale-95;
+    }
+    
+    .btn-animated::after {
+        content: '';
+        @apply absolute inset-0 bg-white/20 translate-y-full transition-transform duration-300;
+    }
+
+    .btn-animated:hover::after {
+        @apply translate-y-0;
+    }
+
+    /* Smooth transition for blurred items */
+    .deactivated-blur {
+        @apply grayscale opacity-60 blur-[2px] pointer-events-none transition-all duration-700 ease-in-out;
+    }
+
+    /* Icon Sizing Helper */
+    .icon-sm { @apply w-4 h-4; }
+    .icon-md { @apply w-5 h-5; }
+    .icon-lg { @apply w-6 h-6; }
+}

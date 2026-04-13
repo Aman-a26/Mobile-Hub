@@ -3,71 +3,89 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
+const morgan = require('morgan');
 const app = express();
 
 // --- 1. Database Connection ---
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("✅ MongoDB Connected Successfully"))
-    .catch(err => console.error("❌ MongoDB Connection Error:", err));
+const MONGODB_URI = process.env.MONGODB_URI ? process.env.MONGODB_URI.trim() : null;
+const DEFAULT_MONGODB_URI = 'mongodb://127.0.0.1:27017/mobile_hub_db';
+const mongoUri = MONGODB_URI || DEFAULT_MONGODB_URI;
 
-// --- 2. View Engine & Static Files ---
+mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+        const connectionType = MONGODB_URI ? "Atlas Cloud" : "Local MongoDB";
+        console.log(`✅ Database Connected to ${connectionType}`);
+    })
+    .catch(err => console.error("❌ DB Connection Error:", err.message));
+
+// --- 2. Settings & Middleware ---
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// --- 3. Body Parsers ---
+app.use(morgan('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// --- 4. Session Configuration ---
-app.use(session({ 
-    secret: process.env.SESSION_SECRET || 'cafe_secret_key_789', 
-    resave: false, 
-    // We set this to false so we don't create empty sessions for bots
-    saveUninitialized: false, 
+// --- 3. Session Configuration ---
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'dev_secret_key_123',
+    resave: false,
+    saveUninitialized: false,
     cookie: { 
-        maxAge: 1000 * 60 * 60 * 24, // Session stays alive for 24 hours
-        httpOnly: true 
+        secure: false, 
+        maxAge: 1000 * 60 * 60 * 24 // 24-hour session
     }
 }));
 
-// --- 5. FIX: Prevent Browser Caching (Logout Security) ---
-// This ensures that when a user logs out, they cannot click "Back" 
-// in the browser to see their private dashboard data.
+// --- 4. Global Variables for Templates ---
 app.use((req, res, next) => {
-    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    next();
-});
-
-// --- 6. FIX: Global Variables for EJS (The Amazon Flow) ---
-app.use((req, res, next) => {
-    // Ensure cart exists even for guests
-    if (!req.session.cart) {
-        req.session.cart = [];
-    }
-
-    // These variables are now available in EVERY .ejs file automatically
-    // You don't need to pass them in res.render() anymore.
-    res.locals.user = req.session.user || null;
-    res.locals.cart = req.session.cart;
-    res.locals.cartCount = req.session.cart.length;
+    if (!req.session.cart) req.session.cart = [];
     
+    // Set global variables for EJS templates
+    res.locals.user = req.session.user || null;
+    res.locals.isAdmin = req.session.isAdmin || false; // Used for Admin Logout button
+    res.locals.cartCount = req.session.cart.reduce((sum, item) => sum + item.qty, 0);
+    res.locals.search = '';
+    res.locals.storeName = "Mobile Hub";
+    res.locals.currencySymbol = '₹';
     next();
 });
 
-// --- 7. Use Routes ---
+// --- 5. Route Mounting ---
 app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/adminRoutes'));
 app.use('/', require('./routes/userRoutes'));
 
-// --- 8. Landing Logic (Amazon Style) ---
+// --- 6. Root & Logout Routes ---
 app.get('/', (req, res) => {
-    // Instead of forcing login, we send everyone to the menu first.
-    res.redirect('/user-dashboard');
+    res.render('index'); 
 });
 
-// --- 9. Server Start ---
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`🚀 Cafe Food Server running at: http://localhost:${PORT}`);
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
 });
+
+const PORT = Number(process.env.PORT) || 3001;
+
+const startServer = (port) => {
+    const server = app.listen(port, () => {
+        console.log(`🚀 Server running on http://localhost:${port}`);
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            const fallbackPort = port === 3001 ? 3002 : port + 1;
+            console.warn(`⚠️ Port ${port} is already in use. Trying port ${fallbackPort}...`);
+            startServer(fallbackPort);
+        } else {
+            console.error('Server error:', err);
+            process.exit(1);
+        }
+    });
+};
+
+startServer(PORT);

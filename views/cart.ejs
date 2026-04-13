@@ -1,75 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart | Cafe Food</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cart</title>
 </head>
-<body class="bg-gray-50 min-h-screen">
-
-    <nav class="bg-white shadow-sm p-4 mb-8">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <a href="/user-dashboard" class="text-orange-500 font-bold">← Back to Menu</a>
-            <h1 class="text-xl font-black text-gray-800 uppercase">Cafe Food</h1>
-            <div class="w-20"></div> </div>
+<body class="bg-gray-50">
+    <nav class="bg-white border-b sticky top-0 z-50 px-8 py-4 flex justify-between">
+        <h1 class="text-2xl font-black text-blue-600 uppercase tracking-tighter">Mobile Store</h1>
+        <div class="flex items-center space-x-4">
+            <a href="/user-dashboard" class="text-blue-600 hover:underline">Back to Shop</a>
+            <a href="/my-orders" class="text-gray-600 hover:text-blue-600 font-bold transition">My Orders</a>
+            <a href="/cart" class="bg-blue-600 text-white px-4 py-1 rounded-full font-bold hover:bg-blue-700">🛒 <span id="count"><%= cartCount %></span></a>
+        </div>
     </nav>
 
-    <main class="max-w-3xl mx-auto px-4">
-        <div class="bg-white rounded-3xl shadow-sm p-8">
-            <h2 class="text-3xl font-black text-gray-900 mb-8">Your Cart</h2>
-
-            <% if (cart.length === 0) { %>
-                <div class="text-center py-10">
-                    <p class="text-gray-400">Your cart is empty.</p>
-                    <a href="/user-dashboard" class="text-orange-500 font-bold mt-4 inline-block">Browse Food</a>
-                </div>
-            <% } else { %>
-                <div class="space-y-6">
-                    <% cart.forEach(item => { %>
-                        <div class="flex justify-between items-center border-b pb-6 last:border-0">
-                            <div>
-                                <h4 class="text-lg font-bold text-gray-800"><%= item.name %></h4>
-                                <p class="text-gray-400">$<%= item.price %> x <%= item.quantity %></p>
-                                
-                                <div class="flex items-center gap-4 mt-2">
-                                    <a href="/cart/dec/<%= item.id %>" class="bg-gray-100 px-3 py-1 rounded-lg font-bold">-</a>
-                                    <span class="font-bold"><%= item.quantity %></span>
-                                    <a href="/cart/inc/<%= item.id %>" class="bg-gray-100 px-3 py-1 rounded-lg font-bold">+</a>
-                                    <a href="/cart/rem/<%= item.id %>" class="text-red-400 text-xs ml-4 uppercase font-bold">Remove</a>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xl font-black text-gray-900">$<%= (item.price * item.quantity).toFixed(2) %></p>
-                            </div>
+    <main class="max-w-7xl mx-auto p-10">
+        <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
+        <% if (cart.length === 0) { %>
+            <p class="text-gray-500">Your cart is empty.</p>
+        <% } else { %>
+            <div class="grid grid-cols-1 gap-6">
+                <% cart.forEach(item => { %>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center justify-between">
+                        <img src="/image/<%= item.image || 'default-phone.jpg' %>" class="h-24 w-24 object-contain" onerror="this.src='/image/default-phone.jpg'">
+                        <div class="flex-1 ml-6">
+                            <h3 class="text-xl font-bold text-gray-900"><%= item.name %></h3>
+                            <p class="text-gray-400 text-sm">$<%= item.price %> each x <%= item.qty %> = $<%= item.price * item.qty %></p>
                         </div>
-                    <% }) %>
-                </div>
-
-                <div class="mt-10 p-6 bg-orange-50 rounded-2xl border border-orange-100 flex justify-between items-center">
-                    <span class="text-gray-600 font-bold uppercase tracking-widest text-sm">Total Amount</span>
-                    <span class="text-3xl font-black text-orange-600">$<%= total.toFixed(2) %></span>
-                </div>
-
-                <div class="mt-8">
-                    <% if (user) { %>
-                        <form action="/checkout" method="POST">
-                            <button type="submit" class="w-full bg-green-500 text-white py-4 rounded-2xl font-black text-xl hover:bg-green-600 transition shadow-lg">
-                                CONFIRM ORDER
-                            </button>
+                        <form action="/cart/remove/<%= item.productId %>" method="post" style="display:inline;">
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-700 transition-colors">Remove</button>
                         </form>
-                    <% } else { %>
-                        <div class="space-y-4">
-                            <p class="text-center text-gray-400 text-sm italic font-medium">Please login to complete your transaction</p>
-                            <a href="/login" class="block w-full text-center bg-blue-600 text-white py-4 rounded-2xl font-black text-xl hover:bg-blue-700 transition shadow-lg">
-                                LOGIN TO CHECKOUT
-                            </a>
-                        </div>
-                    <% } %>
-                </div>
-            <% } %>
-        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="mt-8 text-right">
+                <p class="text-xl font-bold">Total: $<%= total %></p>
+                <form action="/checkout" method="POST" class="mt-4">
+                    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg transition-all transform hover:scale-105">Place Order Now</button>
+                </form>
+            </div>
+        <% } %>
     </main>
-
 </body>
 </html>

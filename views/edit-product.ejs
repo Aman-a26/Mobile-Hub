@@ -1,53 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product - Cafe Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <title>Edit Device</title>
 </head>
-<body class="bg-gray-100 font-sans m-0 flex justify-center items-center min-h-screen">
-
-    <div class="edit-card bg-white p-10 rounded-xl shadow-2xl w-full max-w-[500px]">
-        <h2 class="text-2xl font-bold mb-5 text-gray-800 border-b-2 border-indigo-500 pb-2">Edit Product #<%= product.id %></h2>
-        
-        <form action="/edit-product/<%= product.id %>" method="POST" enctype="multipart/form-data">
-            <div class="form-group mb-4">
-                <label class="block mb-1 text-gray-600 font-semibold text-sm">Product Name</label>
-                <input type="text" name="name" value="<%= product.name %>" required 
-                       class="w-full p-3 border border-gray-300 rounded-md text-base outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-10 rounded-3xl shadow-xl w-full max-w-lg">
+        <h2 class="text-3xl font-black text-gray-900 mb-8">Edit Device</h2>
+        <form action="/admin/edit/<%= product._id %>" method="POST" enctype="multipart/form-data" class="space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="text" name="name" value="<%= product.name %>" placeholder="Device Name" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <input type="text" name="brand" value="<%= product.brand %>" placeholder="Brand" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
-
-            <div class="form-group mb-4">
-                <label class="block mb-1 text-gray-600 font-semibold text-sm">Category</label>
-                <select name="category" 
-                        class="w-full p-3 border border-gray-300 rounded-md text-base outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all bg-white">
-                    <option value="Coffee" <%= product.category === 'Coffee' ? 'selected' : '' %>>Coffee</option>
-                    <option value="Snacks" <%= product.category === 'Snacks' ? 'selected' : '' %>>Snacks</option>
-                    <option value="Desserts" <%= product.category === 'Desserts' ? 'selected' : '' %>>Desserts</option>
-                    <option value="Beverages" <%= product.category === 'Beverages' ? 'selected' : '' %>>Beverages</option>
-                </select>
+            <div class="grid grid-cols-3 gap-4">
+                <input type="text" name="storage" value="<%= product.specs.storage %>" placeholder="Storage (e.g. 256GB)" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <input type="text" name="ram" value="<%= product.specs.ram %>" placeholder="RAM (e.g. 12GB)" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <input type="number" name="price" value="<%= product.price %>" placeholder="Price" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
-
-            <div class="form-group mb-4">
-                <label class="block mb-1 text-gray-600 font-semibold text-sm">Price (₹)</label>
-                <input type="number" name="price" value="<%= product.price %>" step="0.01" required 
-                       class="w-full p-3 border border-gray-300 rounded-md text-base outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all">
+            <input type="number" name="stock" value="<%= product.stock %>" placeholder="Stock" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+            
+            <div>
+                <label class="block text-gray-700 font-bold mb-2">Product Image</label>
+                <input type="file" name="image" accept="image/*" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <% if (product.image) { %>
+                    <p class="text-sm text-gray-500 mt-2">Current image: <%= product.image %></p>
+                <% } %>
             </div>
-
-            <div class="form-group mb-4">
-                <label class="block mb-1 text-gray-600 font-semibold text-sm">Stock Count</label>
-                <input type="number" name="stock" value="<%= product.stock %>" required 
-                       class="w-full p-3 border border-gray-300 rounded-md text-base outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all">
-            </div>
-
-            <div class="form-group mb-4">
-                <label class="block mb-1 text-gray-600 font-semibold text-sm">Description</label>
-                <textarea name="description" rows="3" required
-                          class="w-full p-3 border border-gray-300 rounded-md text-base outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all"><%= product.description %></textarea>
-            </div>
-
-            <div class="form-group mb-4">
+            
+            <button type="submit" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition transform hover:-translate-y-1">Update Device</button>
+        </form>
+    </div>
+</body>
+</html>
                 <label class="block mb-1 text-gray-600 font-semibold text-sm">Current Image</label>
                 <% if (product.image) { %>
                     <img src="<%= product.image %>" alt="<%= product.name %>" class="w-24 h-24 object-cover rounded-md mb-2 border border-gray-200">

@@ -1,30 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const userCtrl = require('../controllers/userController');
+const userController = require('../controllers/userController');
+const cartController = require('../controllers/cartController');
 
-// --- 1. Middleware: The Login Barrier ---
-// We define this but ONLY apply it to the checkout route.
-const isAuthenticated = (req, res, next) => {
-    if (req.session.userId) {
-        return next(); // User is logged in, proceed to checkout
-    }
-    // User is a guest, send them to login
-    res.redirect('/login');
-};
+// --- 1. View Cart ---
+router.get('/cart', cartController.getCart);
 
-// --- 2. Public Routes (Amazon Style) ---
-// Anyone can visit these without logging in.
-router.get('/user-dashboard', userCtrl.getDashboard);
-router.get('/cart', userCtrl.getCart);
-router.post('/add-to-cart', userCtrl.addToCart);
+// --- 2. Add to Cart (with Stock Check and Deduction) ---
+router.post('/add-to-cart', cartController.addToCart);
 
-// --- 3. Protected Routes ---
-// This handles the increase/decrease/remove logic. 
-// We keep this public so guests can manage their cart.
-router.get('/cart/:action/:id', userCtrl.updateCart);
+// --- 3. Update Cart Quantity ---
+router.post('/cart/update', cartController.updateQuantity);
 
-// This is the ONLY route that requires a login.
-// When a guest clicks "Checkout", they are sent to the login page.
-router.post('/checkout', isAuthenticated, userCtrl.checkout);
+// --- 4. Remove from Cart (Restore Stock) ---
+router.post('/cart/remove/:id', cartController.removeFromCart);
+
+// GET: User dashboard (no login required)
+router.get('/user-dashboard', userController.getDashboard);
+
+// --- 4. Checkout ---
+// Handle accidental GET requests by redirecting to the cart
+router.get('/checkout', (req, res) => {
+    res.redirect('/cart');
+});
+
+// Process the actual checkout
+router.post('/checkout', userController.checkout);
+
+// --- 5. My Orders ---
+router.get('/my-orders', userController.getMyOrders);
 
 module.exports = router;
