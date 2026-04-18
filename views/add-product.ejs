@@ -1,30 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Add Device</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>Provision New Device — <%= storeName %></title>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-10 rounded-3xl shadow-xl w-full max-w-lg">
-        <h2 class="text-3xl font-black text-gray-900 mb-8">Register New Device</h2>
-        <form action="/admin/add" method="POST" enctype="multipart/form-data" class="space-y-5">
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" name="name" placeholder="Device Name" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="text" name="brand" placeholder="Brand" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            </div>
-            <div class="grid grid-cols-3 gap-4">
-                <input type="text" name="storage" placeholder="Storage (e.g. 256GB)" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="text" name="ram" placeholder="RAM (e.g. 12GB)" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="number" name="price" placeholder="Price" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            </div>
-            
-            <div>
-                <label class="block text-gray-700 font-bold mb-2">Product Image</label>
-                <input type="file" name="image" accept="image/*" class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            </div>
-            
-            <button type="submit" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition transform hover:-translate-y-1">Add to Catalog</button>
-        </form>
-    </div>
+<body class="antialiased text-brand-primary min-h-screen py-20 px-6">
+    <main class="max-w-2xl mx-auto animate-slide-up">
+        <div class="mb-12 flex items-center justify-between">
+            <a href="/admin-dashboard" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-brand-primary transition-all flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                Inventory
+            </a>
+            <span class="text-[10px] font-black uppercase tracking-widest text-brand-secondary">Terminal v2.0</span>
+        </div>
+
+        <div class="glass-card p-12">
+            <h1 class="text-4xl font-black tracking-tighter mb-2">New <span class="heading-gradient">Hardware</span></h1>
+            <p class="text-gray-400 font-bold mb-10 text-xs uppercase tracking-widest">Register device into global inventory</p>
+
+            <form action="/admin/add" method="POST" enctype="multipart/form-data" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Device Model</label>
+                        <input type="text" name="name" placeholder="iPhone 15 Pro" required class="input-field">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Manufacturer</label>
+                        <input type="text" name="brand" placeholder="Apple" required class="input-field">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Price (<%= currencySymbol %>)</label>
+                        <input type="number" name="price" placeholder="999" required class="input-field">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Stock Units</label>
+                        <input type="number" name="stock" placeholder="50" required class="input-field">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Category</label>
+                        <input type="text" name="category" placeholder="Flagship" class="input-field">
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-6">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Technical Specifications</p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Storage</label>
+                            <input type="text" name="storage" placeholder="256GB" required class="input-field bg-white">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">RAM</label>
+                            <input type="text" name="ram" placeholder="8GB" required class="input-field bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Visual Asset</label>
+                    <div class="relative group">
+                        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div class="input-field flex items-center justify-between group-hover:border-brand-secondary transition-colors">
+                            <span class="text-gray-400 font-medium">Select high-res image...</span>
+                            <div class="bg-brand-primary text-white p-2 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary w-full py-6 rounded-3xl text-xl shadow-glow">Provision Device</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

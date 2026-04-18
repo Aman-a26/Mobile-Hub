@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title><%= product.name %> — <%= storeName %></title>
+</head>
+<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased overflow-x-hidden">
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-12 py-4 flex justify-between items-center border-b border-gray-100 animate-fade-in">
+        <h1 class="text-xl font-bold tracking-tight">
+            <a href="/"><%= storeName %>.</a>
+        </h1>
+        <div class="flex items-center space-x-10">
+            <a href="/user-dashboard" class="nav-link">Catalog</a>
+            <a href="/my-orders" class="nav-link">Orders</a>
+            <a href="/cart" class="relative hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span id="count" class="absolute -top-2 -right-2 bg-[#0071e3] text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"><%= cartCount %></span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-12 px-8 animate-slide-up">
+        <div class="mb-12">
+            <a href="/user-dashboard" class="text-sm font-semibold text-[#0071e3] hover:underline flex items-center gap-2 transition-all hover:-translate-x-1">
+                <span>&larr;</span> All Devices
+            </a>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-16 items-start">
+            <div class="lg:sticky lg:top-24 w-full lg:w-3/5 bg-white rounded-3xl p-12 flex items-center justify-center border border-gray-100 shadow-sm transition-transform hover:shadow-md">
+                <img src="/image/<%= product.image || 'default-phone.jpg' %>" alt="<%= product.name %>" class="max-h-[500px] object-contain animate-float">
+            </div>
+
+            <div class="flex-1 space-y-8">
+                <div>
+                    <span class="text-xs font-bold text-[#0071e3] uppercase tracking-widest"><%= product.brand %></span>
+                    <h1 class="text-5xl font-bold tracking-tight mt-2"><%= product.name %></h1>
+                    <p class="text-2xl font-semibold mt-4"><%= currencySymbol %><%= product.price %></p>
+                </div>
+
+                <div class="space-y-4 pt-8 border-t border-gray-100">
+                    <p class="text-gray-600 leading-relaxed"><%= product.description %></p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Storage</p>
+                        <p class="text-lg font-bold"><%= product.specs.storage %></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">RAM</p>
+                        <p class="text-lg font-bold"><%= product.specs.ram %></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Screen</p>
+                        <p class="text-lg font-bold"><%= product.specs.screen %></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Category</p>
+                        <p class="text-lg font-bold"><%= product.category %></p>
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <% if (parseInt(product.stock) > 0) { %>
+                        <button onclick="addToCart('<%= product._id %>')" class="btn-primary w-full py-4 text-lg">Add to Bag</button>
+                    <% } else { %>
+                        <div class="bg-gray-100 text-gray-500 py-4 text-center rounded-full font-bold">Currently Unavailable</div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function addToCart(productId) {
+            // This function should be implemented in your main script or a shared utility
+            // For now, it's a placeholder to show the button's functionality.
+            alert('Adding ' + productId + ' to cart!');
+            // You would typically send an AJAX request here to update the cart.
+        }
+    </script>
+</body>
+</html>

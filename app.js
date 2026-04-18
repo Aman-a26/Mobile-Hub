@@ -11,7 +11,7 @@ const MONGODB_URI = process.env.MONGODB_URI ? process.env.MONGODB_URI.trim() : n
 const DEFAULT_MONGODB_URI = 'mongodb://127.0.0.1:27017/mobile_hub_db';
 const mongoUri = MONGODB_URI || DEFAULT_MONGODB_URI;
 
-mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 })
+mongoose.connect(mongoUri)
     .then(() => {
         const connectionType = MONGODB_URI ? "Atlas Cloud" : "Local MongoDB";
         console.log(`✅ Database Connected to ${connectionType}`);
@@ -29,7 +29,7 @@ app.use(express.json());
 
 // --- 3. Session Configuration ---
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'dev_secret_key_123',
+    secret: process.env.SESSION_SECRET || 'dev_secret_key_123_change_me',
     resave: false,
     saveUninitialized: false,
     cookie: { 
@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     // Set global variables for EJS templates
     res.locals.user = req.session.user || null;
     res.locals.isAdmin = req.session.isAdmin || false; // Used for Admin Logout button
-    res.locals.cartCount = req.session.cart.reduce((sum, item) => sum + item.qty, 0);
+    res.locals.cartCount = req.session.cart.reduce((sum, item) => sum + (item.qty || 0), 0);
     res.locals.search = '';
     res.locals.storeName = "Mobile Hub";
     res.locals.currencySymbol = '₹';
@@ -69,6 +69,20 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// --- 7. 404 & Error Handling ---
+// Catch 404 and forward to error handler
+app.use((req, res) => {
+    res.status(404).render('404', { title: "Page Not Found" });
+});
+
+// Centralized error handler
+app.use((err, req, res, next) => {
+    console.error(`❌ Error: ${err.message}`);
+    res.status(err.status || 500).render('error', { 
+        message: err.message || "Internal Server Error" 
+    });
+});
+
 const PORT = Number(process.env.PORT) || 3001;
 
 const startServer = (port) => {
@@ -78,7 +92,7 @@ const startServer = (port) => {
 
     server.on('error', (err) => {
         if (err.code === 'EADDRINUSE') {
-            const fallbackPort = port === 3001 ? 3002 : port + 1;
+            const fallbackPort = Number(port) + 1;
             console.warn(`⚠️ Port ${port} is already in use. Trying port ${fallbackPort}...`);
             startServer(fallbackPort);
         } else {

@@ -2,27 +2,41 @@
 <html lang="en">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>MobileHub | Premium Devices</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>MobileHub | Innovation in hand</title>
 </head>
-<body class="bg-slate-900 text-white font-sans">
-    <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute bottom-0 -right-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+<body class="bg-white text-[#1d1d1f] font-sans antialiased">
+    <nav class="absolute top-0 w-full px-12 py-10 flex justify-between items-center z-50">
+        <div class="text-2xl font-black tracking-tighter">MobileHub<span class="text-[#0071e3]">.</span></div>
+        <div class="flex gap-8 items-center">
+            <a href="/login" class="text-sm font-bold text-zinc-900 transition-all px-8 py-3.5 border-2 border-zinc-900 rounded-2xl hover:bg-zinc-900 hover:text-white active:scale-95 shadow-lg shadow-zinc-200/50">Sign In</a>
+            <a href="/register" class="bg-blue-600 text-white px-10 py-4 rounded-2xl text-sm font-bold hover:bg-blue-700 transition-all shadow-[0_15px_40px_rgba(37,99,235,0.3)] transform hover:-translate-y-1 active:scale-95">Register</a>
+        </div>
+    </nav>
 
-        <div class="relative text-center px-6">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                FUTURE IN <br> YOUR HANDS.
+    <div class="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
+        <div class="relative text-center px-6 z-10 max-w-4xl">
+            <h1 class="text-7xl md:text-[130px] font-bold tracking-tight mb-10 leading-[0.85] animate-fade-in">
+                The future of <br><span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">mobile is here.</span>
             </h1>
-            <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-                Discover the next generation of mobile technology. From ultra-wide displays to pro-grade camera systems.
+            <p class="text-gray-500 text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed animate-fade-in" style="animation-delay: 0.2s">
+                Elegance meets performance. Explore the most advanced devices ever created.
             </p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <a href="/user-dashboard" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20">
-                    Browse Store
+            <div class="flex flex-col md:flex-row gap-8 justify-center animate-fade-in" style="animation-delay: 0.4s">
+                <a href="/user-dashboard" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-6 px-16 rounded-[2.5rem] text-xl font-bold shadow-[0_25px_60px_rgba(37,99,235,0.4)] hover:shadow-[0_30px_70px_rgba(37,99,235,0.55)] transition-all transform hover:-translate-y-1 active:scale-95">
+                    Shop the Collection
                 </a>
-                <a href="/login" class="bg-slate-800 hover:bg-slate-700 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all border border-slate-700">
-                    Sign In
+                <a href="/register" class="bg-white text-zinc-900 border-2 border-zinc-100 py-6 px-16 rounded-[2.5rem] text-xl font-bold hover:bg-zinc-50 hover:border-zinc-300 transition-all transform hover:-translate-y-1 active:scale-95 shadow-2xl shadow-zinc-200/50">
+                    Learn more
                 </a>
+            </div>
+        </div>
+        
+        <!-- Visual Element: Clean Device Shadow -->
+        <div class="mt-20 w-full max-w-6xl px-10 animate-slide-up" style="animation-delay: 0.6s">
+            <div class="aspect-[21/9] bg-gradient-to-b from-gray-100 to-white rounded-t-[3rem] shadow-2xl relative overflow-hidden border-x border-t border-gray-100">
+                 <div class="absolute inset-0 bg-[url('https://www.apple.com/v/iphone-15-pro/c/images/overview/welcome/hero_endframe__ov6ewwmbhi6e_large.jpg')] bg-cover bg-center opacity-40"></div>
             </div>
         </div>
     </div>

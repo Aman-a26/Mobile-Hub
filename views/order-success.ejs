@@ -2,19 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Success</title>
-    <style>
-        body { text-align: center; padding: 50px; font-family: sans-serif; }
-        .success-icon { font-size: 80px; color: #28a745; }
-        .btn-home { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>Protocol Complete — <%= storeName %></title>
 </head>
-<body>
-    <div class="success-icon">✔</div>
-    <h1>Order Placed Successfully!</h1>
-    <p>Thank you for shopping with <strong><%= storeName %></strong>.</p>
-    <p>Your inventory has been updated, and your items are being prepared for shipping.</p>
-    
-    <a href="/" class="btn-home">Continue Shopping</a>
+<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased flex items-center justify-center min-h-screen p-8">
+    <div class="max-w-md w-full text-center animate-slide-up">
+        <div class="text-emerald-500 mb-8 animate-scale-in">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+             </svg>
+        </div>
+
+        <h1 class="text-4xl font-bold tracking-tight mb-4">It's on the way.</h1>
+        <p class="text-gray-500 font-medium mb-12">Thank you for your order, <%= customerName %>. We've sent a confirmation to your email.</p>
+
+        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm text-left mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-sm font-bold text-gray-400 uppercase">Order ID</span>
+                <span class="text-sm font-bold">#<%= orderId.toString().slice(-12).toUpperCase() %></span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-bold text-gray-400 uppercase">Total Amount</span>
+                <span class="text-lg font-bold text-[#0071e3]"><%= currencySymbol %><%= totalAmount %></span>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <a href="/my-orders" class="block w-full bg-blue-600 text-white py-5 rounded-2xl text-lg font-bold hover:bg-blue-700 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] transform hover:-translate-y-1 active:scale-95 text-center">View Orders</a>
+            <a href="/user-dashboard" class="block w-full bg-zinc-100 text-zinc-900 py-4 rounded-2xl text-sm font-bold hover:bg-zinc-200 transition-all active:scale-95 text-center">Return to Catalog</a>
+        </div>
+    </div>
 </body>
 </html>

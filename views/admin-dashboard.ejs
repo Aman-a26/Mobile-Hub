@@ -4,71 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
     <title>Inventory - Admin Panel</title>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white border-b sticky top-0 z-50 px-8 py-4 flex justify-between items-center shadow-sm">
-        <h1 class="text-2xl font-black text-blue-600 uppercase tracking-tighter">Admin Panel</h1>
-        <div class="flex items-center space-x-6">
-            <a href="/admin-dashboard" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-1">Inventory</a>
-            <a href="/admin/orders" class="text-gray-600 hover:text-blue-600 font-bold transition">Orders</a>
-            <a href="/logout" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold hover:bg-red-600 hover:text-white transition">Logout</a>
+<body class="bg-[#fbfbfd] antialiased text-[#1d1d1f]">
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 px-12 py-5 flex justify-between items-center shadow-sm">
+        <h1 class="text-2xl font-black tracking-tight flex items-center gap-3">
+            <div class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+            </div>
+            <span class="uppercase tracking-tighter font-bold">Admin Panel</span>
+        </h1>
+        <div class="flex items-center space-x-12">
+            <a href="/admin-dashboard" class="text-[11px] font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1">Inventory</a>
+            <a href="/admin/orders" class="text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-all">Orders</a>
+            <a href="/logout" class="text-rose-500 font-bold text-xs uppercase tracking-widest hover:bg-rose-50 px-4 py-2 rounded-lg transition-all">Exit</a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto p-10">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">Product Catalog</h2>
-            <a href="/admin/add-product" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100 flex items-center gap-2">
-                <span class="text-xl">+</span> Add New Device
+    <main class="max-w-7xl mx-auto py-14 px-12">
+        <div class="flex justify-between items-center mb-14 animate-slide-up">
+            <div>
+                <h2 class="text-4xl font-extrabold tracking-tight mb-2">Inventory Control</h2>
+                <p class="text-gray-400 font-medium text-sm">Real-time hardware stock management.</p>
+            </div>
+            <a href="/admin/add-product" class="bg-[#0071e3] text-white py-3 px-8 rounded-full font-bold text-sm shadow-lg shadow-blue-500/20 hover:bg-[#0077ed] transition-all flex items-center gap-2">
+                <span class="text-lg">+</span> New Product
             </a>
         </div>
 
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.05)] border border-white overflow-hidden animate-fade-in">
             <table class="w-full text-left">
-                <thead class="bg-gray-50/50 border-b border-gray-100">
+                <thead class="bg-gray-100/40 border-b border-gray-100">
                     <tr>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest">Image</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest">Device</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest text-center">Brand</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest text-center">Stock</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest text-right">Price</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest text-center">Visibility</th>
-                        <th class="px-8 py-5 font-bold text-gray-400 uppercase text-[10px] tracking-widest text-right">Actions</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Hardware</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Brand</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Stock</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Price</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     <% products.forEach(product => { %>
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-8 py-5">
-                                <img src="/image/<%= product.image || 'default-phone.jpg' %>" class="w-12 h-12 object-contain bg-gray-50 rounded-xl p-1 border border-gray-100">
+                        <tr class="hover:bg-white transition-colors group">
+                            <td class="px-10 py-6">
+                                <div class="flex items-center gap-8">
+                                    <div class="relative">
+                                        <div class="absolute inset-0 bg-blue-500/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        <img src="/image/<%= product.image || 'default-phone.jpg' %>" class="relative w-16 h-16 object-contain bg-white rounded-2xl p-2 border border-gray-50 shadow-sm transition-all group-hover:scale-110 group-hover:-rotate-3">
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900 text-lg"><%= product.name %></p>
+                                        <p class="text-[10px] text-gray-400 font-black uppercase tracking-[0.1em] mt-0.5"><%= product.specs.storage %> <span class="mx-1 text-gray-200">|</span> <%= product.specs.ram %></p>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="px-8 py-5">
-                                <p class="font-bold text-gray-900"><%= product.name %></p>
-                                <p class="text-[10px] text-gray-400 uppercase font-black"><%= product.specs.storage %> / <%= product.specs.ram %></p>
+                            <td class="px-10 py-6 text-center">
+                                <span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-4 py-1.5 rounded-full uppercase"><%= product.brand %></span>
                             </td>
-                            <td class="px-8 py-5 text-center">
-                                <span class="text-xs font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded-lg uppercase tracking-wider"><%= product.brand %></span>
+                            <td class="px-10 py-6 text-center">
+                                <span class="font-bold <%= product.stock < 5 ? 'text-rose-500' : 'text-gray-900' %> text-lg tracking-tight"><%= product.stock %></span>
                             </td>
-                            <td class="px-8 py-5 text-center">
-                                <span class="font-mono font-bold <%= product.stock < 5 ? 'text-red-500' : 'text-gray-900' %>"><%= product.stock %></span>
-                            </td>
-                            <td class="px-8 py-5 text-right font-black text-blue-600">$<%= product.price %></td>
-                            <td class="px-8 py-5 text-center">
-                                <span class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest <%= product.active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700' %>">
-                                    <%= product.active ? 'Public' : 'Hidden' %>
-                                </span>
-                            </td>
-                            <td class="px-8 py-5 text-right">
+                            <td class="px-10 py-6 text-right font-bold text-[#0071e3] text-xl tracking-tight">$<%= product.price %></td>
+                            <td class="px-10 py-6 text-right">
                                 <div class="flex items-center justify-end space-x-4">
-                                    <a href="/admin/edit/<%= product._id %>" class="text-gray-400 hover:text-blue-600 font-black text-[10px] uppercase tracking-widest transition">Edit</a>
+                                    <a href="/admin/edit/<%= product._id %>" class="text-sm font-bold text-gray-400 hover:text-blue-600 transition">Edit</a>
                                     <form action="/admin/toggle-status/<%= product._id %>" method="POST" class="inline">
-                                        <button class="text-gray-400 hover:text-indigo-600 font-black text-[10px] uppercase tracking-widest transition">
+                                        <button class="text-sm font-bold text-gray-400 hover:text-gray-900 transition">
                                             <%= product.active ? 'Hide' : 'Show' %>
                                         </button>
                                     </form>
                                     <form action="/admin/delete/<%= product._id %>" method="POST" class="inline">
-                                        <button class="text-red-300 hover:text-red-600 font-black text-[10px] uppercase tracking-widest transition">Del</button>
+                                        <button class="text-sm font-bold text-rose-300 hover:text-rose-600 transition">Delete</button>
                                     </form>
                                 </div>
                             </td>
@@ -80,28 +88,24 @@
 
         <!-- Pagination Controls -->
         <% if (totalPages > 1) { %>
-            <div class="flex justify-center items-center mt-12 space-x-2">
+            <div class="flex justify-center items-center mt-16 space-x-4">
                 <% if (hasPrevPage) { %>
-                    <a href="?page=<%= prevPage %>" class="px-4 py-2 bg-white border border-gray-100 text-gray-500 rounded-xl hover:text-blue-600 transition">
-                        &larr;
+                    <a href="?page=<%= prevPage %>" class="w-12 h-12 glass-panel flex items-center justify-center rounded-2xl text-gray-400 hover:text-brand-primary transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
                     </a>
                 <% } %>
 
                 <% for (let i = 1; i <= totalPages; i++) { %>
                     <% if (i === currentPage) { %>
-                        <span class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-100">
-                            <%= i %>
-                        </span>
+                        <span class="w-12 h-12 flex items-center justify-center bg-brand-primary text-white rounded-2xl font-black shadow-glow"><%= i %></span>
                     <% } else { %>
-                        <a href="?page=<%= i %>" class="w-10 h-10 flex items-center justify-center bg-white border border-gray-100 text-gray-600 rounded-xl hover:border-blue-500 transition">
-                            <%= i %>
-                        </a>
+                        <a href="?page=<%= i %>" class="w-12 h-12 flex items-center justify-center glass-panel text-gray-400 rounded-2xl font-bold hover:text-brand-primary transition-all"><%= i %></a>
                     <% } %>
                 <% } %>
 
                 <% if (hasNextPage) { %>
-                    <a href="?page=<%= nextPage %>" class="px-4 py-2 bg-white border border-gray-100 text-gray-500 rounded-xl hover:text-blue-600 transition">
-                        &rarr;
+                    <a href="?page=<%= nextPage %>" class="w-12 h-12 glass-panel flex items-center justify-center rounded-2xl text-gray-400 hover:text-brand-primary transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
                     </a>
                 <% } %>
             </div>

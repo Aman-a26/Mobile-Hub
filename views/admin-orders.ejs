@@ -3,98 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Orders - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>Logistics — Admin Control</title>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white border-b sticky top-0 z-50 px-8 py-4 flex justify-between items-center shadow-sm">
-        <h1 class="text-2xl font-black text-blue-600 uppercase tracking-tighter">Admin Panel</h1>
-        <div class="flex items-center space-x-6">
-            <a href="/admin-dashboard" class="text-gray-600 hover:text-blue-600 font-bold transition">Inventory</a>
-            <a href="/admin/orders" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-1">Orders</a>
-            <a href="/logout" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold hover:bg-red-600 hover:text-white transition">Logout</a>
+<body class="antialiased text-brand-primary">
+    <nav class="bg-white/70 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50 px-12 py-5 flex justify-between items-center shadow-sm">
+        <h1 class="text-2xl font-black tracking-tight flex items-center gap-3">
+            <div class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+            </div>
+            <span class="uppercase tracking-tighter font-bold">Admin Panel</span>
+        </h1>
+        <div class="flex items-center space-x-12">
+            <a href="/admin-dashboard" class="text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-all">Inventory</a>
+            <a href="/admin/orders" class="text-[11px] font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1">Orders</a>
+            <a href="/logout" class="text-rose-500 font-bold text-xs uppercase tracking-widest hover:bg-rose-50 px-4 py-2 rounded-lg transition-all">Exit</a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto p-10">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">Recent Orders</h2>
-            <div class="bg-white px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
-                <span class="text-gray-400 text-sm font-bold uppercase tracking-widest">Total Orders:</span>
-                <span class="text-xl font-black text-blue-600 ml-2"><%= orders.length %></span>
-            </div>
+    <main class="max-w-7xl mx-auto py-14 px-12 animate-slide-up">
+        <div class="mb-14">
+            <h2 class="text-4xl font-extrabold tracking-tight mb-2">Order Logistics</h2>
+            <p class="text-gray-400 font-medium text-sm">Monitor global shipment and fulfillment status.</p>
         </div>
 
-        <% if (orders.length === 0) { %>
-            <div class="bg-white rounded-[2.5rem] p-20 shadow-sm border border-dashed border-gray-200 text-center">
-                <p class="text-gray-500 text-xl font-medium">No orders have been placed yet.</p>
-            </div>
-        <% } else { %>
-            <div class="grid grid-cols-1 gap-8">
-                <% orders.forEach(order => { %>
-                    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                        <div class="bg-gray-50/50 px-10 py-6 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
-                            <div>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Order Identifier</p>
-                                <p class="font-mono text-gray-700 font-bold">#<%= order._id %></p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Customer Details</p>
-                                <p class="font-bold text-gray-900"><%= order.user ? order.user.name : 'Unknown User' %></p>
-                                <p class="text-xs text-gray-500"><%= order.user ? order.user.email : 'No email provided' %></p>
-                            </div>
-                        </div>
-
-                        <div class="p-10">
-                            <div class="space-y-4 mb-8">
-                                <% order.items.forEach(item => { %>
-                                    <div class="flex items-center justify-between p-5 bg-gray-50/30 rounded-2xl border border-gray-50">
-                                        <div class="flex items-center space-x-5">
-                                            <div class="bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black">
-                                                <%= item.quantity %>x
-                                            </div>
+        <div class="bg-white/50 backdrop-blur-sm rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-white/60 overflow-hidden animate-fade-in">
+            <table class="w-full text-left">
+                <thead class="bg-gray-100/30 border-b border-gray-100">
+                    <tr>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Reference</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Consignee & Manifest</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Value</th>
+                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <% orders.forEach(order => { %>
+                        <tr class="hover:bg-white/60 transition-colors group">
+                            <td class="px-10 py-6">
+                                <p class="font-bold text-gray-900 tracking-tight text-lg">#<%= order._id.toString().slice(-8).toUpperCase() %></p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest"><%= order.createdAt.toDateString() %></p>
+                            </td>
+                            <td class="px-10 py-6">
+                                <div class="mb-4">
+                                    <p class="font-bold text-gray-900 leading-none mb-1"><%= order.user ? order.user.name : 'Unknown Operative' %></p>
+                                    <p class="text-[10px] text-gray-400 font-medium tracking-tight"><%= order.user ? order.user.email : '' %></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <% order.items.forEach(item => { %>
+                                        <div class="flex items-center gap-3 bg-gray-50/80 p-2 rounded-xl border border-gray-100/50 inline-flex mr-2 min-w-[200px]">
+                                            <img src="/image/<%= (item.product && item.product.image) ? item.product.image : 'default-phone.jpg' %>" 
+                                                 class="w-8 h-8 object-contain rounded-lg bg-white p-1 shadow-sm">
                                             <div>
-                                                <p class="font-bold text-gray-900 text-lg"><%= item.name %></p>
-                                                <p class="text-xs text-gray-400 font-bold uppercase tracking-tighter">Price: $<%= item.price %></p>
+                                                <p class="text-[10px] font-bold text-gray-800 leading-tight"><%= item.name %></p>
+                                                <p class="text-[9px] text-gray-400 uppercase font-black tracking-tighter">QTY: <%= item.quantity %> • <%= currencySymbol %><%= item.price %></p>
                                             </div>
                                         </div>
-                                        <p class="text-xl font-black text-gray-900">$<%= (item.price * item.quantity).toFixed(2) %></p>
-                                    </div>
-                                <% }) %>
-                            </div>
-
-                            <div class="flex justify-between items-end pt-6 border-t border-gray-50">
-                                <div>
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Manage Status</p>
-                                    <form action="/admin/orders/update-status" method="POST">
-                                        <input type="hidden" name="orderId" value="<%= order._id %>">
-                                        <select name="status" onchange="this.form.submit()" 
-                                            class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-100 focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer transition-all
-                                            <%= order.status === 'Pending' ? 'text-gray-500 bg-gray-50' : '' %>
-                                            <%= order.status === 'Processing' ? 'text-amber-600 bg-amber-50' : '' %>
-                                            <%= order.status === 'Shipping' ? 'text-blue-600 bg-blue-50' : '' %>
-                                            <%= order.status === 'Out for Delivery' ? 'text-indigo-600 bg-indigo-50' : '' %>
-                                            <%= order.status === 'Delivered' ? 'text-emerald-600 bg-emerald-50' : '' %>
-                                            <%= order.status === 'Cancelled' ? 'text-red-600 bg-red-50' : '' %>">
-                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                            <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
-                                            <option value="Shipping" <%= order.status === 'Shipping' ? 'selected' : '' %>>Shipping</option>
-                                            <option value="Out for Delivery" <%= order.status === 'Out for Delivery' ? 'selected' : '' %>>Out for Delivery</option>
-                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                                        </select>
-                                    </form>
+                                    <% }) %>
                                 </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Bill</p>
-                                    <p class="text-4xl font-black text-blue-600 tracking-tighter">$<%= order.totalAmount.toFixed(2) %></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <% }) %>
-            </div>
-        <% } %>
+                            </td>
+                            <td class="px-10 py-6 text-center">
+                                <span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest 
+                                    <%= order.status === 'Processing' ? 'bg-amber-100 text-amber-600' : 
+                                       order.status === 'Cancelled' ? 'bg-rose-100 text-rose-600' : 
+                                       'bg-emerald-100 text-emerald-600' %>">
+                                    <%= order.status %>
+                                </span>
+                            </td>
+                            <td class="px-10 py-6 text-right">
+                                <span class="text-xl font-bold tracking-tight text-[#0071e3]"><%= currencySymbol %><%= order.totalAmount %></span>
+                            </td>
+                            <td class="px-10 py-6">
+                                <form action="/admin/orders/update-status" method="POST" class="flex items-center justify-end gap-2">
+                                    <input type="hidden" name="orderId" value="<%= order._id %>">
+                                    <select name="status" class="bg-gray-100 border-none text-[10px] font-bold uppercase tracking-widest rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-gray-200 transition-all cursor-pointer">
+                                        <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                        <option value="Shipping" <%= order.status === 'Shipping' ? 'selected' : '' %>>Shipping</option>
+                                        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                        <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                    </select>
+                                    <button type="submit" class="bg-[#1d1d1f] text-white p-2 rounded-lg hover:bg-black transition-all shadow-md active:scale-90">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     </main>
 </body>
 </html>

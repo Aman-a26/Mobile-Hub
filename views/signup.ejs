@@ -2,26 +2,50 @@
 <html>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Join MobileHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>Register Access — <%= storeName %></title>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen p-6">
-    <div class="bg-white p-12 rounded-[40px] shadow-2xl w-full max-w-md">
-        <h2 class="text-3xl font-black text-gray-900 mb-2">Create Account</h2>
-        <p class="text-gray-400 font-medium mb-8">Join the community of tech enthusiasts.</p>
+<body class="flex items-center justify-center min-h-screen p-6 antialiased relative overflow-hidden">
+    <!-- Background Decorative Elements -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-indigo-400/20 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-rose-400/10 blur-[120px]"></div>
+    </div>
 
-        <form action="/register" method="POST" class="space-y-4">
-            <input type="text" name="name" placeholder="Full Name" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            <input type="email" name="email" placeholder="Email Address" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            <input type="password" name="password" placeholder="Create Password" required class="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none">
-            
-            <button type="submit" class="w-full py-5 bg-black text-white rounded-2xl font-bold hover:bg-gray-800 transition shadow-xl">
-                Get Started
-            </button>
+    <div class="w-full max-w-[440px] text-center p-12 bg-white/70 backdrop-blur-2xl rounded-[3.5rem] shadow-premium border border-white/50 animate-slide-up">
+        <div class="mb-12 flex justify-center">
+            <div class="w-20 h-20 bg-brand-primary rounded-3xl flex items-center justify-center text-white shadow-glow transform hover:scale-110 transition-all duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+        </div>
+
+        <h2 class="text-5xl font-black tracking-tighter mb-4 text-gray-900 italic leading-none">Initialize<br><span class="heading-gradient not-italic uppercase">Access.</span></h2>
+        <p class="text-gray-400 font-bold mb-12 text-xs uppercase tracking-[0.2em] px-4 opacity-70">Unified Hub Protocol</p>
+
+        <form action="/register" method="POST" class="space-y-6 text-left">
+            <div class="space-y-1">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Full Identity</label>
+                <input type="text" name="name" placeholder="John Doe" required class="input-field">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Communication</label>
+                <input type="email" name="email" placeholder="agent@<%= storeName.toLowerCase().replace(' ', '') %>.com" required class="input-field">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Security Key</label>
+                <input type="password" name="password" placeholder="••••••••" required class="input-field">
+            </div>
+            <div class="pt-6">
+                <button type="submit" class="btn-primary w-full py-5 text-xl rounded-2xl shadow-glow">Deploy Account</button>
+            </div>
         </form>
 
-        <p class="mt-8 text-center text-sm font-bold text-gray-400">
-            Already a member? <a href="/login" class="text-blue-600 hover:underline">Sign In</a>
-        </p>
+        <div class="mt-16 pt-8 border-t border-gray-100/50">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Already an operative? <a href="/login" class="text-brand-secondary hover:underline ml-2">Secure login</a></p>
+        </div>
     </div>
 </body>
 </html>

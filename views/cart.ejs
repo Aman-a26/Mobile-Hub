@@ -1,45 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <title>Shopping Bag | <%= storeName %></title>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white border-b sticky top-0 z-50 px-8 py-4 flex justify-between">
-        <h1 class="text-2xl font-black text-blue-600 uppercase tracking-tighter">Mobile Store</h1>
-        <div class="flex items-center space-x-4">
-            <a href="/user-dashboard" class="text-blue-600 hover:underline">Back to Shop</a>
-            <a href="/my-orders" class="text-gray-600 hover:text-blue-600 font-bold transition">My Orders</a>
-            <a href="/cart" class="bg-blue-600 text-white px-4 py-1 rounded-full font-bold hover:bg-blue-700">🛒 <span id="count"><%= cartCount %></span></a>
+<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased overflow-x-hidden">
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-12 py-4 flex justify-between items-center border-b border-gray-100 animate-fade-in">
+        <h1 class="text-xl font-bold tracking-tight">
+            <a href="/"><%= storeName %>.</a>
+        </h1>
+        <div class="flex items-center space-x-10">
+            <a href="/user-dashboard" class="nav-link">Shop</a>
+            <a href="/my-orders" class="nav-link">Orders</a>
+            <a href="/cart" class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span id="count" class="absolute -top-2 -right-2 bg-[#0071e3] text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"><%= cartCount %></span>
+            </a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto p-10">
-        <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
+    <main class="max-w-3xl mx-auto py-20 px-8 animate-slide-up">
+        <h1 class="text-4xl font-bold tracking-tight mb-12">Review your bag.</h1>
+
         <% if (cart.length === 0) { %>
-            <p class="text-gray-500">Your cart is empty.</p>
+            <div class="text-center py-20 bg-white rounded-3xl border border-gray-100 animate-fade-in">
+                <p class="text-zinc-400 text-lg font-medium mb-8">Your bag is empty.</p>
+                <a href="/user-dashboard" class="inline-block bg-zinc-900 text-white px-10 py-4 rounded-2xl font-bold hover:bg-black transition-all shadow-xl shadow-zinc-200 active:scale-95 transform hover:-translate-y-1">Continue shopping</a>
+            </div>
         <% } else { %>
-            <div class="grid grid-cols-1 gap-6">
+            <div class="space-y-12 mb-20">
                 <% cart.forEach(item => { %>
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center justify-between">
-                        <img src="/image/<%= item.image || 'default-phone.jpg' %>" class="h-24 w-24 object-contain" onerror="this.src='/image/default-phone.jpg'">
-                        <div class="flex-1 ml-6">
-                            <h3 class="text-xl font-bold text-gray-900"><%= item.name %></h3>
-                            <p class="text-gray-400 text-sm">$<%= item.price %> each x <%= item.qty %> = $<%= item.price * item.qty %></p>
+                    <div class="flex items-start gap-10 pb-12 border-b border-gray-100 last:border-0 transition-all hover:translate-x-1">
+                        <div class="w-32 h-32 flex-shrink-0">
+                            <img src="/image/<%= item.image || 'default-phone.jpg' %>" class="w-full h-full object-contain" onerror="this.src='/image/default-phone.jpg'">
                         </div>
-                        <form action="/cart/remove/<%= item.productId %>" method="post" style="display:inline;">
-                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-700 transition-colors">Remove</button>
-                        </form>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-2xl font-bold tracking-tight"><%= item.name %></h3>
+                                <p class="text-2xl font-bold tracking-tight"><%= currencySymbol %><%= item.price * item.qty %></p>
+                            </div>
+                            <div class="mt-6 flex items-center gap-6">
+                                <div class="flex items-center bg-zinc-100 rounded-2xl p-1 shadow-inner">
+                                    <button onclick="updateQty('<%= item.productId %>', 'dec')" class="w-10 h-10 flex items-center justify-center bg-white shadow-sm hover:shadow-md rounded-xl transition-all font-bold text-zinc-900 active:scale-90">-</button>
+                                    <span id="qty-<%= item.productId %>" class="w-12 text-center font-bold text-base"><%= item.qty %></span>
+                                    <button onclick="updateQty('<%= item.productId %>', 'inc')" class="w-10 h-10 flex items-center justify-center bg-white shadow-sm hover:shadow-md rounded-xl transition-all font-bold text-zinc-900 active:scale-90">+</button>
+                                </div>
+                                <form action="/cart/remove/<%= item.productId %>" method="post" class="inline">
+                                    <button type="submit" class="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all active:scale-95">Remove</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 <% }) %>
             </div>
-            <div class="mt-8 text-right">
-                <p class="text-xl font-bold">Total: $<%= total %></p>
-                <form action="/checkout" method="POST" class="mt-4">
-                    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg transition-all transform hover:scale-105">Place Order Now</button>
+
+            <div class="py-12 border-t border-gray-200">
+                <div class="flex justify-between items-center mb-10">
+                    <span class="text-3xl font-bold tracking-tight">Total</span>
+                    <span id="total-price" class="text-3xl font-bold tracking-tight text-blue-600"><%= currencySymbol %><%= total %></span>
+                </div>
+                <form action="/checkout" method="POST">
+                    <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-full py-6 rounded-[2rem] text-xl font-bold shadow-[0_25px_60px_rgba(37,99,235,0.35)] hover:shadow-[0_25px_60px_rgba(37,99,235,0.5)] transition-all transform hover:-translate-y-1 active:scale-95">Check Out</button>
                 </form>
             </div>
         <% } %>
     </main>
+
+    <script>
+        async function updateQty(productId, action) {
+            try {
+                const response = await fetch('/cart/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productId, action })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById(`qty-${productId}`).innerText = data.newQty;
+                    document.getElementById('total-price').innerText = `<%= currencySymbol %>${data.total}`;
+                    document.getElementById('count').innerText = data.cartCount;
+                } else if (data.message) {
+                    alert(data.message);
+                }
+            } catch (err) {
+                console.error('Update failed:', err);
+            }
+        }
+    </script>
 </body>
 </html>
