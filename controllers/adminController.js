@@ -42,7 +42,7 @@ exports.addProduct = async (req, res) => {
             specs: { storage, ram }, // Structured for mobile data
             stock,
             category,
-            image: req.file ? `uploads/${req.file.filename}` : 'default-phone.jpg'
+            image: req.file ? `uploads/${req.file.filename}` : 'image/default-phone.jpg'
         });
         
         res.redirect('/admin-dashboard');

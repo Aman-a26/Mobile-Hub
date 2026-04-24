@@ -2,49 +2,75 @@
 <html>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/main.css">
+    <style>
+        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .input-glow:focus { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border-color: rgba(34, 211, 238, 0.4); }
+        .heading-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
     <title>Register Access — <%= storeName %></title>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6 antialiased relative overflow-hidden">
+<body class="flex items-center justify-center min-h-screen p-6 antialiased relative overflow-hidden bg-[#020617] text-white font-['Plus_Jakarta_Sans']">
     <!-- Background Decorative Elements -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-indigo-400/20 blur-[120px]"></div>
-        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-rose-400/10 blur-[120px]"></div>
+        <div class="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-cyan-500/10 blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-fuchsia-600/10 blur-[120px] animate-float" style="animation-delay: 1s;"></div>
     </div>
 
-    <div class="w-full max-w-[440px] text-center p-12 bg-white/70 backdrop-blur-2xl rounded-[3.5rem] shadow-premium border border-white/50 animate-slide-up">
+    <div class="w-full max-w-[440px] text-center p-12 glass-panel rounded-[3rem] shadow-2xl animate-slide-up transition-all duration-700 hover:scale-[1.01]">
         <div class="mb-12 flex justify-center">
-            <div class="w-20 h-20 bg-brand-primary rounded-3xl flex items-center justify-center text-white shadow-glow transform hover:scale-110 transition-all duration-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="w-20 h-20 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-3xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(34,211,238,0.3)] transform hover:scale-110 hover:rotate-6 transition-all duration-500 cursor-pointer group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 animate-float group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
             </div>
         </div>
 
-        <h2 class="text-5xl font-black tracking-tighter mb-4 text-gray-900 italic leading-none">Initialize<br><span class="heading-gradient not-italic uppercase">Access.</span></h2>
-        <p class="text-gray-400 font-bold mb-12 text-xs uppercase tracking-[0.2em] px-4 opacity-70">Unified Hub Protocol</p>
+
 
         <form action="/register" method="POST" class="space-y-6 text-left">
             <div class="space-y-1">
                 <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Full Identity</label>
-                <input type="text" name="name" placeholder="John Doe" required class="input-field">
+                <input type="text" name="name" placeholder="John Doe" required class="w-full bg-slate-800/40 border border-slate-700 rounded-2xl px-6 py-4 outline-none transition-all duration-300 input-glow focus:bg-slate-800/60">
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Communication</label>
-                <input type="email" name="email" placeholder="agent@<%= storeName.toLowerCase().replace(' ', '') %>.com" required class="input-field">
+                <input type="email" name="email" placeholder="agent@<%= storeName.toLowerCase().replace(' ', '') %>.com" required class="w-full bg-slate-800/40 border border-slate-700 rounded-2xl px-6 py-4 outline-none transition-all duration-300 input-glow focus:bg-slate-800/60">
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-4">Security Key</label>
-                <input type="password" name="password" placeholder="••••••••" required class="input-field">
+                <input type="password" name="password" placeholder="••••••••" required class="w-full bg-slate-800/40 border border-slate-700 rounded-2xl px-6 py-4 outline-none transition-all duration-300 input-glow focus:bg-slate-800/60">
             </div>
             <div class="pt-6">
-                <button type="submit" class="btn-primary w-full py-5 text-xl rounded-2xl shadow-glow">Deploy Account</button>
+                <button type="submit" class="w-full py-5 text-xl font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-2xl shadow-[0_0_20px_rgba(34,211,238,0.3)] transform transition-all duration-300 hover:scale-[1.02] active:scale-95">Deploy Account</button>
             </div>
         </form>
-
-        <div class="mt-16 pt-8 border-t border-gray-100/50">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Already an operative? <a href="/login" class="text-brand-secondary hover:underline ml-2">Secure login</a></p>
+        <div class="mt-16 pt-8 border-t border-slate-800">
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Already an operative? <a href="/login" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 ml-2 transition-colors duration-300">Secure login</a></p>
         </div>
     </div>
 </body>

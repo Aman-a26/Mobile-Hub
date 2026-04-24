@@ -5,54 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/main.css">
-    <title>Shopping Bag | <%= storeName %></title>
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        @keyframes cart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #22d3ee; }
+            100% { transform: scale(1); }
+        }
+        .cart-animate { animation: cart-pulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+    <title>Bag Review | <%= storeName %></title>
 </head>
-<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased overflow-x-hidden">
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-12 py-4 flex justify-between items-center border-b border-gray-100 animate-fade-in">
-        <h1 class="text-xl font-bold tracking-tight">
-            <a href="/"><%= storeName %>.</a>
-        </h1>
-        <div class="flex items-center space-x-10">
-            <a href="/user-dashboard" class="nav-link">Shop</a>
-            <a href="/my-orders" class="nav-link">Orders</a>
-            <a href="/cart" class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <span id="count" class="absolute -top-2 -right-2 bg-[#0071e3] text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"><%= cartCount %></span>
-            </a>
+<body class="min-h-screen antialiased selection:bg-cyan-500/30">
+    <!-- Decorative Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/5 blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-8 py-4 backdrop-blur-xl border-b border-white/5 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-2xl font-black italic tracking-tighter text-white uppercase group">
+                    <span class="text-cyan-500 group-hover:text-white transition-colors duration-300">MobileHub</span>.
+                </a>
+                <div class="hidden md:flex gap-6">
+                    <% ui.nav.forEach(item => { %>
+                        <a href="<%= item.path %>" class="text-[10px] font-black uppercase tracking-[0.2em] <%= ui.currentPath === item.path ? 'text-cyan-400' : 'text-gray-500 hover:text-white' %> transition-all">
+                            <%= item.label %>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/cart" class="relative group p-2 rounded-xl hover:bg-white/5 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span id="count" class="absolute -top-1 -right-1 accent-gradient text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border border-slate-950">
+                        <%= cartCount %>
+                    </span>
+                </a>
+                <a href="/logout" class="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all">Exit</a>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-3xl mx-auto py-20 px-8 animate-slide-up">
-        <h1 class="text-4xl font-bold tracking-tight mb-12">Review your bag.</h1>
+    <main class="max-w-3xl mx-auto py-20 px-6">
+        <h1 class="text-6xl font-black tracking-tighter text-gradient mb-16 leading-none">Bag<br>Review.</h1>
 
         <% if (cart.length === 0) { %>
-            <div class="text-center py-20 bg-white rounded-3xl border border-gray-100 animate-fade-in">
-                <p class="text-zinc-400 text-lg font-medium mb-8">Your bag is empty.</p>
-                <a href="/user-dashboard" class="inline-block bg-zinc-900 text-white px-10 py-4 rounded-2xl font-bold hover:bg-black transition-all shadow-xl shadow-zinc-200 active:scale-95 transform hover:-translate-y-1">Continue shopping</a>
+            <div class="text-center py-24 glass-card rounded-[3rem]">
+                <p class="text-gray-500 text-xl font-bold uppercase tracking-widest mb-10">Your bag is empty.</p>
+                <a href="/user-dashboard" class="inline-block accent-gradient text-slate-950 px-10 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-2xl shadow-cyan-500/20 active:scale-95 transform transition-all">Initiate Search</a>
             </div>
         <% } else { %>
-            <div class="space-y-12 mb-20">
+            <div class="space-y-10 mb-20">
                 <% cart.forEach(item => { %>
-                    <div class="flex items-start gap-10 pb-12 border-b border-gray-100 last:border-0 transition-all hover:translate-x-1">
-                        <div class="w-32 h-32 flex-shrink-0">
-                            <img src="/image/<%= item.image || 'default-phone.jpg' %>" class="w-full h-full object-contain" onerror="this.src='/image/default-phone.jpg'">
+                    <div class="glass-card rounded-[2.5rem] p-8 flex flex-col md:flex-row items-center gap-10 transition-all hover:border-white/10 group">
+                        <div class="w-32 h-32 flex-shrink-0 bg-slate-950/50 rounded-2xl p-4 border border-white/5 flex items-center justify-center">
+                            <img src="<%= item.image ? (item.image.startsWith('/') ? item.image : '/' + item.image) : '/image/default-phone.jpg' %>" 
+                                 class="w-full h-full object-contain transition-transform group-hover:scale-110" 
+                                 onerror="this.src='/image/default-phone.jpg'">
                         </div>
                         <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-2xl font-bold tracking-tight"><%= item.name %></h3>
-                                <p class="text-2xl font-bold tracking-tight"><%= currencySymbol %><%= item.price * item.qty %></p>
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-2xl font-black tracking-tighter text-white"><%= item.name %></h3>
+                                <p class="text-2xl font-black italic text-cyan-400"><%= currencySymbol %><%= formatPrice(item.price * item.qty) %></p>
                             </div>
                             <div class="mt-6 flex items-center gap-6">
-                                <div class="flex items-center bg-zinc-100 rounded-2xl p-1 shadow-inner">
-                                    <button onclick="updateQty('<%= item.productId %>', 'dec')" class="w-10 h-10 flex items-center justify-center bg-white shadow-sm hover:shadow-md rounded-xl transition-all font-bold text-zinc-900 active:scale-90">-</button>
-                                    <span id="qty-<%= item.productId %>" class="w-12 text-center font-bold text-base"><%= item.qty %></span>
-                                    <button onclick="updateQty('<%= item.productId %>', 'inc')" class="w-10 h-10 flex items-center justify-center bg-white shadow-sm hover:shadow-md rounded-xl transition-all font-bold text-zinc-900 active:scale-90">+</button>
+                                <div class="flex items-center bg-slate-950/50 rounded-2xl p-1 border border-white/5">
+                                    <button onclick="updateQty('<%= item.productId %>', 'dec')" class="w-10 h-10 flex items-center justify-center bg-slate-900 border border-white/5 hover:border-cyan-500/30 rounded-xl transition-all font-black text-gray-400 hover:text-white active:scale-90">-</button>
+                                    <span id="qty-<%= item.productId %>" class="w-12 text-center font-black text-sm"><%= item.qty %></span>
+                                    <button onclick="updateQty('<%= item.productId %>', 'inc')" class="w-10 h-10 flex items-center justify-center bg-slate-900 border border-white/5 hover:border-cyan-500/30 rounded-xl transition-all font-black text-gray-400 hover:text-white active:scale-90">+</button>
                                 </div>
                                 <form action="/cart/remove/<%= item.productId %>" method="post" class="inline">
-                                    <button type="submit" class="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all active:scale-95">Remove</button>
+                                    <button type="submit" class="text-[10px] font-black uppercase tracking-widest text-red-500/50 hover:text-red-500 transition-all">Remove Item</button>
                                 </form>
                             </div>
                         </div>
@@ -60,19 +93,22 @@
                 <% }) %>
             </div>
 
-            <div class="py-12 border-t border-gray-200">
-                <div class="flex justify-between items-center mb-10">
-                    <span class="text-3xl font-bold tracking-tight">Total</span>
-                    <span id="total-price" class="text-3xl font-bold tracking-tight text-blue-600"><%= currencySymbol %><%= total %></span>
+            <div class="py-12 border-t border-white/5">
+                <div class="flex justify-between items-center mb-12">
+                    <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Valuation Total</span>
+                    <span id="total-price" class="text-4xl font-black italic text-white"><%= currencySymbol %><%= formatPrice(total) %></span>
                 </div>
                 <form action="/checkout" method="POST">
-                    <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-full py-6 rounded-[2rem] text-xl font-bold shadow-[0_25px_60px_rgba(37,99,235,0.35)] hover:shadow-[0_25px_60px_rgba(37,99,235,0.5)] transition-all transform hover:-translate-y-1 active:scale-95">Check Out</button>
+                    <button type="submit" class="accent-gradient text-slate-950 w-full py-6 rounded-full text-sm font-black uppercase tracking-[0.2em] shadow-2xl shadow-cyan-500/20 hover:scale-[1.02] active:scale-95 transition-all">Authorize Checkout</button>
                 </form>
             </div>
         <% } %>
     </main>
 
     <script>
+        const currencySymbol = '<%= currencySymbol %>';
+        const formatter = new Intl.NumberFormat('en-IN');
+
         async function updateQty(productId, action) {
             try {
                 const response = await fetch('/cart/update', {
@@ -83,8 +119,14 @@
                 const data = await response.json();
                 if (data.success) {
                     document.getElementById(`qty-${productId}`).innerText = data.newQty;
-                    document.getElementById('total-price').innerText = `<%= currencySymbol %>${data.total}`;
+                    document.getElementById('total-price').innerText = currencySymbol + formatter.format(data.total);
                     document.getElementById('count').innerText = data.cartCount;
+
+                    // Animate nav count
+                    const countEl = document.getElementById('count');
+                    countEl.classList.remove('cart-animate');
+                    void countEl.offsetWidth; // trigger reflow
+                    countEl.classList.add('cart-animate');
                 } else if (data.message) {
                     alert(data.message);
                 }

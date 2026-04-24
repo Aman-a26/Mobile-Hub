@@ -45,10 +45,43 @@ app.use((req, res, next) => {
     // Set global variables for EJS templates
     res.locals.user = req.session.user || null;
     res.locals.isAdmin = req.session.isAdmin || false; // Used for Admin Logout button
-    res.locals.cartCount = req.session.cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+    res.locals.cartCount = (req.session.cart || []).reduce((sum, item) => sum + (item.qty || 0), 0);
     res.locals.search = '';
-    res.locals.storeName = "Mobile Hub";
+    res.locals.storeName = "MobileHub";
     res.locals.currencySymbol = '₹';
+    res.locals.currentYear = new Date().getFullYear();
+
+    // Modern UI Framework: Centralized Design Tokens and Navigation
+    res.locals.ui = {
+        currentPath: req.path,
+        title: 'MobileHub',
+        subtitle: 'Premium devices for the modern world.',
+        theme: {
+            primary: '#0f172a',    // Slate 900
+            secondary: '#94a3b8',  // Slate 400
+            accent: '#06b6d4',     // Cyan 500: Matches Login aesthetics
+            surface: 'rgba(15, 23, 42, 0.6)', // Glass panel base
+            background: '#020617', // Deep Space
+            border: 'rgba(255, 255, 255, 0.05)'
+        },
+        layout: {
+            radius: '1.5rem',      // Modern rounded corners
+            shadow: '0 20px 50px rgba(6, 182, 212, 0.15)'
+        },
+        animation: {
+            fast: 'transition-all duration-200 cubic-bezier(0.16, 1, 0.3, 1)',
+            standard: 'transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1)',
+            slow: 'transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1)',
+            hoverScale: 'transform transition-all duration-300 hover:scale-[1.02] active:scale-95',
+            glass: 'backdrop-blur-2xl bg-[#0f172a]/60 border border-white/5 shadow-2xl'
+        },
+        nav: [
+            { label: 'Shop', path: '/user-dashboard', icon: 'smart-phone' },
+            { label: 'Orders', path: '/my-orders', icon: 'package' }
+        ]
+    };
+
+    res.locals.formatPrice = (num) => new Intl.NumberFormat('en-IN').format(num);
     next();
 });
 

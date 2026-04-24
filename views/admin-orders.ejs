@@ -1,100 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/main.css">
-    <title>Logistics — Admin Control</title>
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+    <title>Logistics Control | <%= storeName %></title>
 </head>
-<body class="antialiased text-brand-primary">
-    <nav class="bg-white/70 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50 px-12 py-5 flex justify-between items-center shadow-sm">
-        <h1 class="text-2xl font-black tracking-tight flex items-center gap-3">
-            <div class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+<body class="min-h-screen antialiased selection:bg-cyan-500/30">
+    <!-- Decorative Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/5 blur-[120px]"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 px-8 py-4 backdrop-blur-xl border-b border-white/5 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <h1 class="text-2xl font-black italic tracking-tighter text-white uppercase group flex items-center gap-3">
+                <div class="w-10 h-10 accent-gradient rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-cyan-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                </div>
+                <span class="hidden sm:inline">Admin Panel</span>
+            </h1>
+            <div class="flex items-center gap-8">
+                <a href="/admin-dashboard" class="text-[10px] font-black uppercase tracking-widest <%= ui.currentPath === '/admin-dashboard' ? 'text-cyan-400' : 'text-gray-500 hover:text-white' %> transition-all">Inventory</a>
+                <a href="/admin/orders" class="text-[10px] font-black uppercase tracking-widest <%= ui.currentPath === '/admin/orders' ? 'text-cyan-400' : 'text-gray-500 hover:text-white' %> transition-all">Orders</a>
+                <a href="/logout" class="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all">Exit</a>
             </div>
-            <span class="uppercase tracking-tighter font-bold">Admin Panel</span>
-        </h1>
-        <div class="flex items-center space-x-12">
-            <a href="/admin-dashboard" class="text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-all">Inventory</a>
-            <a href="/admin/orders" class="text-[11px] font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1">Orders</a>
-            <a href="/logout" class="text-rose-500 font-bold text-xs uppercase tracking-widest hover:bg-rose-50 px-4 py-2 rounded-lg transition-all">Exit</a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto py-14 px-12 animate-slide-up">
-        <div class="mb-14">
-            <h2 class="text-4xl font-extrabold tracking-tight mb-2">Order Logistics</h2>
-            <p class="text-gray-400 font-medium text-sm">Monitor global shipment and fulfillment status.</p>
+    <main class="max-w-7xl mx-auto py-12 px-6">
+        <div class="mb-16">
+            <p class="text-cyan-500 font-black tracking-[0.3em] uppercase text-[10px] mb-4">Core Module: ORDER_LOGISTICS</p>
+            <h1 class="text-6xl font-black tracking-tighter text-gradient leading-none">Order<br>Logistics.</h1>
         </div>
 
-        <div class="bg-white/50 backdrop-blur-sm rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-white/60 overflow-hidden animate-fade-in">
-            <table class="w-full text-left">
-                <thead class="bg-gray-100/30 border-b border-gray-100">
-                    <tr>
-                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Reference</th>
-                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Consignee & Manifest</th>
-                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
-                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Value</th>
-                        <th class="px-10 py-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    <% orders.forEach(order => { %>
-                        <tr class="hover:bg-white/60 transition-colors group">
-                            <td class="px-10 py-6">
-                                <p class="font-bold text-gray-900 tracking-tight text-lg">#<%= order._id.toString().slice(-8).toUpperCase() %></p>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest"><%= order.createdAt.toDateString() %></p>
-                            </td>
-                            <td class="px-10 py-6">
-                                <div class="mb-4">
-                                    <p class="font-bold text-gray-900 leading-none mb-1"><%= order.user ? order.user.name : 'Unknown Operative' %></p>
-                                    <p class="text-[10px] text-gray-400 font-medium tracking-tight"><%= order.user ? order.user.email : '' %></p>
-                                </div>
-                                <div class="space-y-2">
-                                    <% order.items.forEach(item => { %>
-                                        <div class="flex items-center gap-3 bg-gray-50/80 p-2 rounded-xl border border-gray-100/50 inline-flex mr-2 min-w-[200px]">
-                                            <img src="/image/<%= (item.product && item.product.image) ? item.product.image : 'default-phone.jpg' %>" 
-                                                 class="w-8 h-8 object-contain rounded-lg bg-white p-1 shadow-sm">
-                                            <div>
-                                                <p class="text-[10px] font-bold text-gray-800 leading-tight"><%= item.name %></p>
-                                                <p class="text-[9px] text-gray-400 uppercase font-black tracking-tighter">QTY: <%= item.quantity %> • <%= currencySymbol %><%= item.price %></p>
-                                            </div>
-                                        </div>
-                                    <% }) %>
-                                </div>
-                            </td>
-                            <td class="px-10 py-6 text-center">
-                                <span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest 
-                                    <%= order.status === 'Processing' ? 'bg-amber-100 text-amber-600' : 
-                                       order.status === 'Cancelled' ? 'bg-rose-100 text-rose-600' : 
-                                       'bg-emerald-100 text-emerald-600' %>">
-                                    <%= order.status %>
-                                </span>
-                            </td>
-                            <td class="px-10 py-6 text-right">
-                                <span class="text-xl font-bold tracking-tight text-[#0071e3]"><%= currencySymbol %><%= order.totalAmount %></span>
-                            </td>
-                            <td class="px-10 py-6">
-                                <form action="/admin/orders/update-status" method="POST" class="flex items-center justify-end gap-2">
-                                    <input type="hidden" name="orderId" value="<%= order._id %>">
-                                    <select name="status" class="bg-gray-100 border-none text-[10px] font-bold uppercase tracking-widest rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-gray-200 transition-all cursor-pointer">
-                                        <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
-                                        <option value="Shipping" <%= order.status === 'Shipping' ? 'selected' : '' %>>Shipping</option>
-                                        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                        <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                                    </select>
-                                    <button type="submit" class="bg-[#1d1d1f] text-white p-2 rounded-lg hover:bg-black transition-all shadow-md active:scale-90">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-                                    </button>
-                                </form>
-                            </td>
+        <div class="glass-card rounded-[2.5rem] overflow-hidden border border-white/5">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-950/50 border-b border-white/5">
+                            <th class="px-8 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Reference</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Consignee & Manifest</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-center">Status</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-right">Value</th>
+                            <th class="px-8 py-6 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-right">Operations</th>
                         </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <% orders.forEach(order => { %>
+                            <tr class="hover:bg-white/5 transition-colors group">
+                                <td class="px-8 py-6">
+                                    <p class="font-black text-white tracking-tighter text-lg">#<%= order._id.toString().slice(-8).toUpperCase() %></p>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1"><%= order.createdAt.toDateString() %></p>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <div class="mb-4">
+                                        <p class="font-bold text-white leading-none mb-1 group-hover:text-cyan-400 transition-colors"><%= order.user ? order.user.name : 'Unknown Operative' %></p>
+                                        <p class="text-[10px] text-gray-500 font-medium tracking-tight"><%= order.user ? order.user.email : '' %></p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <% order.items.forEach(item => { %>
+                                            <div class="flex items-center gap-3 bg-slate-950/50 p-2 rounded-xl border border-white/5 min-w-[180px]">
+                                                <img src="<%= (item.product && item.product.image) ? (item.product.image.startsWith('/') ? item.product.image : '/' + item.product.image) : '/image/default-phone.jpg' %>" 
+                                                     class="w-8 h-8 object-contain rounded-lg bg-white/5 p-1"
+                                                     onerror="this.src='/image/default-phone.jpg'">
+                                                <div>
+                                                    <p class="text-[10px] font-black text-gray-300 leading-tight"><%= item.name %></p>
+                                                    <p class="text-[9px] text-gray-500 uppercase font-black tracking-tighter">QTY: <%= item.quantity %> • <%= currencySymbol %><%= formatPrice(item.price) %></p>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-center">
+                                    <span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-current bg-opacity-10
+                                        <%= order.status === 'Processing' ? 'border-amber-500/20 text-amber-400 bg-amber-500' : 
+                                           order.status === 'Cancelled' ? 'border-rose-500/20 text-rose-400 bg-rose-500' : 
+                                           order.status === 'Shipping' ? 'border-blue-500/20 text-blue-400 bg-blue-500' :
+                                           'border-emerald-500/20 text-emerald-400 bg-emerald-500' %>">
+                                        <%= order.status %>
+                                    </span>
+                                </td>
+                                <td class="px-8 py-6 text-right font-black text-white italic text-lg">
+                                    <%= currencySymbol %><%= formatPrice(order.totalAmount) %>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <form action="/admin/orders/update-status" method="POST" class="flex items-center justify-end gap-2">
+                                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                                        <select name="status" class="bg-slate-900 border border-white/10 text-[10px] font-black uppercase tracking-widest rounded-xl px-4 py-2.5 outline-none focus:border-cyan-500/50 transition-all cursor-pointer text-gray-400 focus:text-white">
+                                            <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                            <option value="Shipping" <%= order.status === 'Shipping' ? 'selected' : '' %>>Shipping</option>
+                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                        <button type="submit" class="accent-gradient text-slate-950 p-2.5 rounded-xl hover:scale-110 transition-all shadow-lg shadow-cyan-500/10 active:scale-95">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>
-</html>
+</html> 

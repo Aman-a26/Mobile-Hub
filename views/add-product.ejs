@@ -5,78 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/main.css">
-    <title>Provision New Device — <%= storeName %></title>
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-glow:focus { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border-color: rgba(34, 211, 238, 0.4); }
+        .field-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 0.5rem; display: block; }
+    </style>
+    <title>Provision New Device | <%= storeName %></title>
 </head>
-<body class="antialiased text-brand-primary min-h-screen py-20 px-6">
-    <main class="max-w-2xl mx-auto animate-slide-up">
-        <div class="mb-12 flex items-center justify-between">
-            <a href="/admin-dashboard" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-brand-primary transition-all flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
-                Inventory
-            </a>
-            <span class="text-[10px] font-black uppercase tracking-widest text-brand-secondary">Terminal v2.0</span>
-        </div>
+<body class="min-h-screen antialiased selection:bg-cyan-500/30">
+    <!-- Decorative Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/5 blur-[120px]"></div>
+    </div>
 
-        <div class="glass-card p-12">
-            <h1 class="text-4xl font-black tracking-tighter mb-2">New <span class="heading-gradient">Hardware</span></h1>
-            <p class="text-gray-400 font-bold mb-10 text-xs uppercase tracking-widest">Register device into global inventory</p>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-8 py-4 backdrop-blur-xl border-b border-white/5 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-2xl font-black italic tracking-tighter text-white uppercase group">
+                    <span class="text-cyan-500 group-hover:text-white transition-colors duration-300">MobileHub</span>.
+                </a>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/admin-dashboard" class="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-white/10 text-gray-400 hover:text-white transition-all">Back to Panel</a>
+                <a href="/logout" class="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all">Exit</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto py-16 px-6">
+        <div class="glass-card rounded-[3rem] p-12 relative overflow-hidden">
+            <!-- Header Decor -->
+            <div class="absolute top-0 right-0 p-8">
+                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-500/30">Terminal v2.0</span>
+            </div>
+
+            <header class="mb-12">
+                <h1 class="text-5xl font-black tracking-tighter text-gradient leading-tight">New<br>Hardware.</h1>
+                <p class="text-gray-500 font-bold mt-2 text-[10px] uppercase tracking-widest">Register device into global inventory</p>
+            </header>
 
             <form action="/admin/add" method="POST" enctype="multipart/form-data" class="space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Device Model</label>
-                        <input type="text" name="name" placeholder="iPhone 15 Pro" required class="input-field">
+                    <div>
+                        <label class="field-label">Device Model</label>
+                        <input type="text" name="name" placeholder="iPhone 15 Pro" required 
+                            class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Manufacturer</label>
-                        <input type="text" name="brand" placeholder="Apple" required class="input-field">
+                    <div>
+                        <label class="field-label">Manufacturer</label>
+                        <input type="text" name="brand" placeholder="Apple" required 
+                            class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Price (<%= currencySymbol %>)</label>
-                        <input type="number" name="price" placeholder="999" required class="input-field">
+                    <div>
+                        <label class="field-label">Price (<%= currencySymbol %>)</label>
+                        <input type="number" name="price" placeholder="999" required 
+                            class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Stock Units</label>
-                        <input type="number" name="stock" placeholder="50" required class="input-field">
+                    <div>
+                        <label class="field-label">Stock Units</label>
+                        <input type="number" name="stock" placeholder="50" required 
+                            class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Category</label>
-                        <input type="text" name="category" placeholder="Flagship" class="input-field">
+                    <div>
+                        <label class="field-label">Category</label>
+                        <input type="text" name="category" placeholder="Flagship" 
+                            class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                     </div>
                 </div>
 
-                <div class="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-6">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Technical Specifications</p>
+                <div class="p-8 bg-slate-950/50 rounded-[2rem] border border-white/5 space-y-6">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500/50">Technical Specifications</p>
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">Storage</label>
-                            <input type="text" name="storage" placeholder="256GB" required class="input-field bg-white">
+                        <div>
+                            <label class="field-label">Storage</label>
+                            <input type="text" name="storage" placeholder="256GB" required 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-2">RAM</label>
-                            <input type="text" name="ram" placeholder="8GB" required class="input-field bg-white">
+                        <div>
+                            <label class="field-label">RAM</label>
+                            <input type="text" name="ram" placeholder="8GB" required 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white placeholder:text-gray-700">
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Visual Asset</label>
+                <div>
+                    <label class="field-label">Visual Asset</label>
                     <div class="relative group">
                         <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div class="input-field flex items-center justify-between group-hover:border-brand-secondary transition-colors">
-                            <span class="text-gray-400 font-medium">Select high-res image...</span>
-                            <div class="bg-brand-primary text-white p-2 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                        <div class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm flex items-center justify-between group-hover:border-cyan-500/40 transition-all focus-within:bg-slate-900/60">
+                            <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px]">Select high-res image...</span>
+                            <div class="accent-gradient text-slate-950 p-2 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary w-full py-6 rounded-3xl text-xl shadow-glow">Provision Device</button>
+                <button type="submit" 
+                    class="accent-gradient w-full py-6 rounded-3xl text-slate-950 text-sm font-black uppercase tracking-[0.2em] shadow-2xl shadow-cyan-500/20 hover:scale-[1.02] active:scale-95 transition-all">
+                    Provision Device
+                </button>
             </form>
         </div>
     </main>

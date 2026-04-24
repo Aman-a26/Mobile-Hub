@@ -2,42 +2,74 @@
 <html lang="en">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/main.css">
-    <title>MobileHub | Innovation in hand</title>
+    </style>
+    <title>MobileHub — Innovation in hand</title>
 </head>
-<body class="bg-white text-[#1d1d1f] font-sans antialiased">
-    <nav class="absolute top-0 w-full px-12 py-10 flex justify-between items-center z-50">
-        <div class="text-2xl font-black tracking-tighter">MobileHub<span class="text-[#0071e3]">.</span></div>
+<body class="bg-[#020617] text-white font-['Plus_Jakarta_Sans'] antialiased relative overflow-hidden">
+    <!-- Background Decorative Elements -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-cyan-500/10 blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-fuchsia-600/10 blur-[120px] animate-float" style="animation-delay: 1s;"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full px-12 py-6 flex justify-between items-center z-50 glass-nav">
+        <div class="text-2xl font-black tracking-tighter">MobileHub<span class="text-cyan-400">.</span></div>
         <div class="flex gap-8 items-center">
-            <a href="/login" class="text-sm font-bold text-zinc-900 transition-all px-8 py-3.5 border-2 border-zinc-900 rounded-2xl hover:bg-zinc-900 hover:text-white active:scale-95 shadow-lg shadow-zinc-200/50">Sign In</a>
-            <a href="/register" class="bg-blue-600 text-white px-10 py-4 rounded-2xl text-sm font-bold hover:bg-blue-700 transition-all shadow-[0_15px_40px_rgba(37,99,235,0.3)] transform hover:-translate-y-1 active:scale-95">Register</a>
+            <a href="/login" class="text-sm font-bold text-white transition-all px-8 py-3 border border-white/10 rounded-xl hover:bg-white/10 active:scale-95">Sign In</a>
+            <a href="/register" class="bg-cyan-500 text-slate-950 px-10 py-3 rounded-xl text-sm font-bold hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] transform active:scale-95">Register</a>
         </div>
     </nav>
 
     <div class="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
         <div class="relative text-center px-6 z-10 max-w-4xl">
             <h1 class="text-7xl md:text-[130px] font-bold tracking-tight mb-10 leading-[0.85] animate-fade-in">
-                The future of <br><span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">mobile is here.</span>
+                The future of <br><span class="heading-gradient uppercase italic">mobile is here.</span>
             </h1>
-            <p class="text-gray-500 text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed animate-fade-in" style="animation-delay: 0.2s">
+            <p class="text-gray-400 text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed animate-fade-in opacity-0" style="animation-delay: 0.2s; animation-fill-mode: forwards;">
                 Elegance meets performance. Explore the most advanced devices ever created.
             </p>
-            <div class="flex flex-col md:flex-row gap-8 justify-center animate-fade-in" style="animation-delay: 0.4s">
-                <a href="/user-dashboard" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-6 px-16 rounded-[2.5rem] text-xl font-bold shadow-[0_25px_60px_rgba(37,99,235,0.4)] hover:shadow-[0_30px_70px_rgba(37,99,235,0.55)] transition-all transform hover:-translate-y-1 active:scale-95">
+            <div class="flex flex-col md:flex-row gap-8 justify-center animate-fade-in opacity-0" style="animation-delay: 0.4s; animation-fill-mode: forwards;">
+                <a href="/user-dashboard" class="bg-gradient-to-tr from-cyan-500 to-blue-600 text-slate-950 py-6 px-16 rounded-[2rem] text-xl font-bold shadow-[0_10px_40px_rgba(34,211,238,0.3)] hover:shadow-[0_15px_50px_rgba(34,211,238,0.45)] transition-all transform hover:-translate-y-1 hover:scale-105 active:scale-95">
                     Shop the Collection
                 </a>
-                <a href="/register" class="bg-white text-zinc-900 border-2 border-zinc-100 py-6 px-16 rounded-[2.5rem] text-xl font-bold hover:bg-zinc-50 hover:border-zinc-300 transition-all transform hover:-translate-y-1 active:scale-95 shadow-2xl shadow-zinc-200/50">
+                <a href="/register" class="bg-slate-900/40 text-white border border-white/10 backdrop-blur-xl py-6 px-16 rounded-[2rem] text-xl font-bold hover:bg-slate-800/60 transition-all transform hover:-translate-y-1 active:scale-95">
                     Learn more
                 </a>
             </div>
         </div>
-        
-        <!-- Visual Element: Clean Device Shadow -->
         <div class="mt-20 w-full max-w-6xl px-10 animate-slide-up" style="animation-delay: 0.6s">
-            <div class="aspect-[21/9] bg-gradient-to-b from-gray-100 to-white rounded-t-[3rem] shadow-2xl relative overflow-hidden border-x border-t border-gray-100">
-                 <div class="absolute inset-0 bg-[url('https://www.apple.com/v/iphone-15-pro/c/images/overview/welcome/hero_endframe__ov6ewwmbhi6e_large.jpg')] bg-cover bg-center opacity-40"></div>
-            </div>
+            <div class="aspect-[21/9] bg-gradient-to-b from-slate-900 to-transparent rounded-t-[3rem] shadow-2xl relative overflow-hidden border-x border-t border-white/5">
+                 <
         </div>
     </div>
 </body>

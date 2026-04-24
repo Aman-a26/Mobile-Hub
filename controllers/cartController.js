@@ -15,9 +15,15 @@ exports.getCart = (req, res) => {
 exports.addToCart = async (req, res) => {
     try {
         const { productId } = req.body;
-        const product = await Product.findById(productId);
-        
-        if (!product || !product.active || parseInt(product.stock) <= 0) {
+
+        // Atomic update: find a product that is active and has stock > 0, then decrement stock by 1
+        const product = await Product.findOneAndUpdate(
+            { _id: productId, active: true, stock: { $gt: 0 } },
+            { $inc: { stock: -1 } },
+            { new: true }
+        );
+
+        if (!product) {
             return res.json({ success: false, message: 'This item is currently unavailable or out of stock.' });
         }
 
@@ -36,9 +42,6 @@ exports.addToCart = async (req, res) => {
             });
         }
 
-        product.stock -= 1;
-        await product.save();
-
         const cartCount = req.session.cart.reduce((sum, item) => sum + item.qty, 0);
         res.json({ success: true, cartCount });
     } catch (err) {
@@ -52,23 +55,23 @@ exports.updateQuantity = async (req, res) => {
     try {
         const { productId, action } = req.body;
         const item = req.session.cart.find(i => i.productId === productId);
-        const product = await Product.findById(productId);
-
-        if (!item || !product) return res.status(404).json({ success: false });
+        if (!item) return res.status(404).json({ success: false });
 
         if (action === 'inc') {
-            if (product.stock > 0) {
-                item.qty += 1;
-                product.stock -= 1;
-            } else {
+            const product = await Product.findOneAndUpdate(
+                { _id: productId, active: true, stock: { $gt: 0 } },
+                { $inc: { stock: -1 } }
+            );
+            
+            if (!product) {
                 return res.json({ success: false, message: 'Out of stock' });
             }
+            item.qty += 1;
         } else if (action === 'dec' && item.qty > 1) {
+            await Product.findByIdAndUpdate(productId, { $inc: { stock: 1 } });
             item.qty -= 1;
-            product.stock += 1;
         }
 
-        await product.save();
         const total = req.session.cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
         const cartCount = req.session.cart.reduce((sum, i) => sum + i.qty, 0);
         

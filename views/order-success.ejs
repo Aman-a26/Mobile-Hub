@@ -5,35 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/main.css">
-    <title>Protocol Complete — <%= storeName %></title>
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+    <title>Deployment Successful | <%= storeName %></title>
 </head>
-<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased flex items-center justify-center min-h-screen p-8">
-    <div class="max-w-md w-full text-center animate-slide-up">
-        <div class="text-emerald-500 mb-8 animate-scale-in">
-             <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-             </svg>
+<body class="min-h-screen antialiased flex items-center justify-center p-6">
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/15 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/10 blur-[120px]"></div>
+    </div>
+
+    <main class="max-w-md w-full glass-card rounded-[3rem] p-12 text-center relative overflow-hidden">
+        <div class="mb-10 inline-flex items-center justify-center w-24 h-24 rounded-full accent-gradient shadow-2xl shadow-cyan-500/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
         </div>
 
-        <h1 class="text-4xl font-bold tracking-tight mb-4">It's on the way.</h1>
-        <p class="text-gray-500 font-medium mb-12">Thank you for your order, <%= customerName %>. We've sent a confirmation to your email.</p>
+        <header class="mb-10">
+            <h1 class="text-4xl font-black tracking-tighter text-gradient leading-tight mb-4">Deployment<br>Confirmed.</h1>
+            <p class="text-gray-400 font-bold text-[10px] uppercase tracking-widest leading-relaxed px-4">
+                Operative <%= customerName %>, your hardware request has been processed and added to the deployment queue.
+            </p>
+        </header>
 
-        <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm text-left mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-sm font-bold text-gray-400 uppercase">Order ID</span>
-                <span class="text-sm font-bold">#<%= orderId.toString().slice(-12).toUpperCase() %></span>
+        <div class="space-y-3 mb-12">
+            <div class="flex justify-between items-center px-6 py-4 bg-slate-950/50 rounded-2xl border border-white/5">
+                <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Manifest ID</span>
+                <span class="text-xs font-black text-cyan-400 uppercase tracking-tighter">#<%= orderId.toString().slice(-8).toUpperCase() %></span>
             </div>
-            <div class="flex justify-between items-center">
-                <span class="text-sm font-bold text-gray-400 uppercase">Total Amount</span>
-                <span class="text-lg font-bold text-[#0071e3]"><%= currencySymbol %><%= totalAmount %></span>
+            <div class="flex justify-between items-center px-6 py-4 bg-slate-950/50 rounded-2xl border border-white/5">
+                <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Total Valuation</span>
+                <span class="text-xl font-black italic text-white"><%= currencySymbol %><%= formatPrice(totalAmount) %></span>
             </div>
         </div>
 
         <div class="space-y-4">
-            <a href="/my-orders" class="block w-full bg-blue-600 text-white py-5 rounded-2xl text-lg font-bold hover:bg-blue-700 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.25)] transform hover:-translate-y-1 active:scale-95 text-center">View Orders</a>
-            <a href="/user-dashboard" class="block w-full bg-zinc-100 text-zinc-900 py-4 rounded-2xl text-sm font-bold hover:bg-zinc-200 transition-all active:scale-95 text-center">Return to Catalog</a>
+            <a href="/my-orders" class="block w-full py-5 rounded-2xl accent-gradient text-slate-950 text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-cyan-500/20 active:scale-95 transition-all">
+                Track Shipment
+            </a>
+            <a href="/user-dashboard" class="block w-full py-5 rounded-2xl border border-white/10 text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all">
+                Return to Inventory
+            </a>
         </div>
-    </div>
+    </main>
 </body>
 </html>

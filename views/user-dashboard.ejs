@@ -1,108 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/main.css">
-    <title><%= storeName %> | Premium Mobile Collection</title>
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-glow:focus { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border-color: rgba(34, 211, 238, 0.4); }
+        
+        @keyframes cart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #22d3ee; }
+            100% { transform: scale(1); }
+        }
+        .cart-animate { animation: cart-pulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+    <title><%= storeName %> | Operative Dashboard</title>
 </head>
-<body class="bg-[#fbfbfd] text-[#1d1d1f] antialiased">
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-12 py-4 flex justify-between items-center border-b border-gray-100 animate-fade-in">
-        <h1 class="text-xl font-bold tracking-tight">
-            <a href="/"><%= storeName %>.</a>
-        </h1>
-        <div class="flex items-center space-x-10">
-            <% if (user) { %>
-                <a href="/my-orders" class="nav-link hover:text-[#0071e3]">Orders</a>
-                <a href="/logout" class="nav-link text-red-500">Logout</a>
-            <% } else { %>
-                <a href="/login" class="nav-link">Login</a>
-                <a href="/register" class="bg-black text-white px-4 py-1.5 rounded-full text-xs font-bold hover:scale-105 transition-transform">Sign up</a>
-            <% } %>
-            <a href="/cart" class="relative hover:scale-110 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <span id="count" class="absolute -top-2 -right-2 bg-[#0071e3] text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"><%= cartCount %></span>
-            </a>
+<body class="min-h-screen antialiased selection:bg-cyan-500/30">
+    <!-- Decorative Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-600/5 blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-8 py-4 backdrop-blur-xl border-b border-white/5 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-2xl font-black italic tracking-tighter text-white uppercase group">
+                    <span class="text-cyan-500 group-hover:text-white transition-colors duration-300">MobileHub</span>.
+                </a>
+                <div class="hidden md:flex gap-6">
+                    <% ui.nav.forEach(item => { %>
+                        <a href="<%= item.path %>" class="text-[10px] font-black uppercase tracking-[0.2em] <%= ui.currentPath === item.path ? 'text-cyan-400' : 'text-gray-500 hover:text-white' %> transition-all">
+                            <%= item.label %>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/cart" class="relative group p-2 rounded-xl hover:bg-white/5 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span id="count" class="absolute -top-1 -right-1 accent-gradient text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border border-slate-950">
+                        <%= cartCount %>
+                    </span>
+                </a>
+                <a href="/logout" class="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all">Exit</a>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto py-12 px-8 animate-slide-up">
-        <!-- Filter & Search Section -->
-        <div class="mb-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8 animate-fade-in">
-            <div>
-                <h2 class="text-4xl font-bold tracking-tight">Shop. <span class="text-gray-400">The best devices are here.</span></h2>
-            </div>
-            
-            <form action="/user-dashboard" method="GET" class="flex items-center gap-4">
-                <div class="relative">
-                    <input type="text" name="search" value="<%= search %>" placeholder="Search devices..." 
-                        class="bg-gray-100 border-none rounded-full px-6 py-2 w-64 text-sm focus:ring-1 focus:ring-blue-500">
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Search and Header Section -->
+        <div class="flex flex-col lg:flex-row justify-between items-end gap-8 mb-16">
+            <header>
+                <p class="text-cyan-500 font-black tracking-[0.3em] uppercase text-[10px] mb-4">Authorized: <%= user ? user.name : 'Guest' %></p>
+                <h1 class="text-6xl font-black tracking-tighter text-gradient leading-none">Device<br>Inventory.</h1>
+            </header>
+
+            <form action="/user-dashboard" method="GET" class="flex flex-wrap items-center gap-4 w-full lg:w-auto">
+                <div class="relative flex-grow lg:flex-grow-0">
+                    <input type="text" name="search" value="<%= search %>" placeholder="Scan model name..." 
+                        class="w-full lg:w-72 bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-3 text-sm outline-none input-glow transition-all focus:bg-slate-900/60">
                 </div>
                 
                 <select name="brand" onchange="this.form.submit()" 
-                    class="bg-white border-gray-200 rounded-full px-4 py-2 text-sm font-semibold cursor-pointer">
-                    <option value="">All Brands</option>
+                    class="bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-3 text-sm font-bold text-gray-400 cursor-pointer outline-none hover:bg-slate-900/60 transition-all">
+                    <option value="">All Manufactures</option>
                     <% brands.forEach(b => { %>
                         <option value="<%= b %>" <%= selectedBrand === b ? 'selected' : '' %>><%= b %></option>
                     <% }) %>
                 </select>
                 
                 <% if (search || selectedBrand) { %>
-                    <a href="/user-dashboard" class="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-700 px-4">Reset</a>
+                    <a href="/user-dashboard" class="p-3 rounded-2xl border border-white/10 text-gray-500 hover:text-rose-500 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </a>
                 <% } %>
             </form>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[400px]">
+            <% if (products.length === 0) { %>
+                <div class="col-span-full text-center py-24 glass-card rounded-[2.5rem]">
+                    <div class="inline-flex p-6 rounded-full bg-slate-950/50 mb-6 border border-white/5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-black text-white mb-2">No signal found.</h3>
+                    <p class="text-gray-500 font-medium max-w-xs mx-auto">Our sensors couldn't locate any devices matching those parameters.</p>
+                    <a href="/user-dashboard" class="mt-8 inline-block px-8 py-3 rounded-full border border-cyan-500/20 text-cyan-400 font-bold uppercase tracking-widest text-[10px] hover:bg-cyan-500/10 transition-all">Clear Search</a>
+                </div>
+            <% } %>
+
             <% products.forEach(product => { %>
-                <div class="bg-white rounded-3xl p-6 flex flex-col h-full shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group animate-scale-in">
-                    <div class="relative mb-6 aspect-square flex items-center justify-center">
-                        <img src="/image/<%= product.image || 'default-phone.jpg' %>" 
-                             class="h-44 w-44 object-contain transition-transform duration-500 group-hover:scale-110" 
-                             onerror="this.src='/image/default-phone.jpg'">
-                    </div>
-                    
-                    <div class="flex-grow text-center">
-                        <span class="text-[10px] font-bold text-[#0071e3] uppercase mb-1 block"><%= product.brand %></span>
-                        <h3 class="text-lg font-bold mb-2"><%= product.name %></h3>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-[10px] bg-gray-50 text-gray-500 px-2 py-1 rounded mx-auto"><%= product.specs.storage %></span>
+                <div class="glass-card rounded-[2.5rem] p-6 group transition-all duration-500 hover:-translate-y-2 hover:border-cyan-500/20 hover:shadow-[0_20px_40px_rgba(6,182,212,0.1)]">
+                    <div class="relative aspect-square mb-6 overflow-hidden rounded-3xl bg-slate-950/50 flex items-center justify-center">
+                        <img src="<%= product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default-phone.jpg' %>" 
+                             onerror="this.onerror=null; this.src='/image/default-phone.jpg'">
+                            <span class="text-[8px] font-black uppercase tracking-[0.2em] text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20">
+                                <%= product.brand %>
+                            </span>
                         </div>
+                    
+                    <div class="space-y-2 mb-6">
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-1"><%= product.name %></h3>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                            <%= product.specs.storage %> <span class="mx-1 text-slate-700">•</span> <%= product.specs.ram %> RAM
+                        </p>
                     </div>
                     
-                    <div class="flex flex-col gap-4 mt-auto">
-                        <span class="text-xl font-bold tracking-tight"><%= currencySymbol %><%= product.price %></span>
-                        <% if (parseInt(product.stock) > 0) { %>
-                            <button onclick="addToCart('<%= product._id %>')" class="bg-[#0071e3] text-white py-2 rounded-full text-xs font-bold hover:bg-[#0077ed]">Add to Cart</button>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                        <span class="text-xl font-black text-white italic"><%= currencySymbol %><%= formatPrice(product.price) %></span>
+                        <% if(parseInt(product.stock) > 0) { %>
+                            <button onclick="addToCart('<%= product._id %>')" 
+                                class="accent-gradient p-3 rounded-2xl shadow-lg shadow-cyan-500/20 hover:scale-110 active:scale-90 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-950" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 100-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 004.97 1H3z" />
+                                </svg>
+                            </button>
                         <% } else { %>
-                            <span class="text-red-500 text-[10px] font-bold uppercase">Out of stock</span>
+                            <span class="text-[8px] font-black uppercase tracking-widest text-red-400 bg-red-400/5 px-3 py-1.5 rounded-xl border border-red-400/20">Depleted</span>
                         <% } %>
                     </div>
                 </div>
             <% }) %>
         </div>
 
-        <!-- Pagination Controls -->
+        <!-- Pagination -->
         <% if (totalPages > 1) { %>
-            <div class="flex justify-center items-center mt-20 space-x-4">
+            <div class="flex justify-center items-center mt-20 gap-3">
                 <% if (hasPrevPage) { %>
-                    <a href="?page=<%= prevPage %>&search=<%= search %>&brand=<%= selectedBrand %>" class="w-12 h-12 glass-panel flex items-center justify-center rounded-2xl text-gray-400 hover:text-brand-primary transition-all shadow-soft">
+                    <a href="?page=<%= prevPage %>&search=<%= search %>&brand=<%= selectedBrand %>" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
                     </a>
                 <% } %>
 
                 <% for (let i = 1; i <= totalPages; i++) { %>
-                    <% if (i === currentPage) { %>
-                        <span class="w-12 h-12 flex items-center justify-center bg-brand-primary text-white rounded-2xl font-black shadow-glow"><%= i %></span>
-                    <% } else { %>
-                        <a href="?page=<%= i %>&search=<%= search %>&brand=<%= selectedBrand %>" class="w-12 h-12 flex items-center justify-center glass-panel text-gray-400 rounded-2xl font-bold hover:text-brand-primary transition-all hover:scale-105"><%= i %></a>
-                    <% } %>
+                    <a href="?page=<%= i %>&search=<%= search %>&brand=<%= selectedBrand %>" 
+                       class="w-12 h-12 flex items-center justify-center rounded-2xl font-black text-sm transition-all <%= i === currentPage ? 'accent-gradient text-slate-950' : 'border border-white/10 text-gray-500 hover:text-white' %>">
+                        <%= i %>
+                    </a>
                 <% } %>
 
                 <% if (hasNextPage) { %>
-                    <a href="?page=<%= nextPage %>&search=<%= search %>&brand=<%= selectedBrand %>" class="w-12 h-12 glass-panel flex items-center justify-center rounded-2xl text-gray-400 hover:text-brand-primary transition-all shadow-soft">
+                    <a href="?page=<%= nextPage %>&search=<%= search %>&brand=<%= selectedBrand %>" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
                     </a>
                 <% } %>
@@ -112,6 +165,7 @@
 
     <script>
         async function addToCart(productId) {
+            const countEl = document.getElementById('count');
             try {
                 const res = await fetch('/add-to-cart', {
                     method: 'POST',
@@ -120,7 +174,9 @@
                 });
                 const data = await res.json();
                 if(data.success) {
-                    document.getElementById('count').innerText = data.cartCount;
+                    countEl.innerText = data.cartCount;
+                    countEl.classList.add('cart-animate');
+                    setTimeout(() => countEl.classList.remove('cart-animate'), 400);
                 } else {
                     alert(data.message);
                 }
