@@ -15,7 +15,8 @@
     "express-session": "^1.19.0",
     "mongoose": "^7.8.9",
     "morgan": "^1.10.1",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "readable-stream": "^4.7.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
