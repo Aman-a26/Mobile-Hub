@@ -15,6 +15,9 @@ router.post('/cart/update', cartController.updateQuantity);
 // --- 4. Remove from Cart (Restore Stock) ---
 router.post('/cart/remove/:id', cartController.removeFromCart);
 
+// GET: Product details for Quick View (Big Screen)
+router.get('/product-details/:id', userController.getProductDetails);
+
 // GET: User dashboard (no login required)
 router.get('/user-dashboard', userController.getDashboard);
 

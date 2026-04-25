@@ -12,6 +12,29 @@ const adminUser = {
     role: "admin"
 };
 
+const products = [
+    {
+        name: "iPhone 15 Pro",
+        brand: "Apple",
+        price: 129900,
+        specs: { storage: "256GB", ram: "8GB" },
+        stock: 10,
+        category: "Smartphone",
+        active: true,
+        image: "/image/default-phone.jpg"
+    },
+    {
+        name: "Galaxy S24 Ultra",
+        brand: "Samsung",
+        price: 129999,
+        specs: { storage: "512GB", ram: "12GB" },
+        stock: 15,
+        category: "Smartphone",
+        active: true,
+        image: "/image/default-phone.jpg"
+    }
+];
+
 const seedDB = async () => {
     try {
         const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mobile_hub_db';

@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
+const fs = require('fs');
 const morgan = require('morgan');
 const app = express();
 
@@ -17,6 +18,12 @@ mongoose.connect(mongoUri)
         console.log(`✅ Database Connected to ${connectionType}`);
     })
     .catch(err => console.error("❌ DB Connection Error:", err.message));
+
+// Ensure upload directory exists for Multer
+const uploadDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // --- 2. Settings & Middleware ---
 app.set('view engine', 'ejs');
@@ -44,7 +51,7 @@ app.use((req, res, next) => {
     
     // Set global variables for EJS templates
     res.locals.user = req.session.user || null;
-    res.locals.isAdmin = req.session.isAdmin || false; // Used for Admin Logout button
+    res.locals.isAdmin = req.session.user && req.session.user.role === 'admin';
     res.locals.cartCount = (req.session.cart || []).reduce((sum, item) => sum + (item.qty || 0), 0);
     res.locals.search = '';
     res.locals.storeName = "MobileHub";

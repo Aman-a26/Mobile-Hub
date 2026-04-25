@@ -3,7 +3,8 @@ const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, password } = req.body;
+        const email = req.body.email.toLowerCase();
         
         // Hash the password for security
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,7 +24,8 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { password } = req.body;
+        const email = req.body.email.toLowerCase();
         const user = await User.findOne({ email });
 
         if (user && await bcrypt.compare(password, user.password)) {

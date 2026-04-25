@@ -1,14 +1,29 @@
 const Product = require('../models/Product');
 
 // Display the cart with calculated totals
-exports.getCart = (req, res) => {
-    const cart = req.session.cart || [];
-    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    res.render('cart', { 
-        cart, 
-        total,
-        user: req.session.user 
-    });
+exports.getCart = async (req, res) => {
+    try {
+        const cart = req.session.cart || [];
+        
+        // Fetch fresh product details to ensure images and prices load correctly
+        const refreshedCart = await Promise.all(cart.map(async (item) => {
+            const product = await Product.findById(item.productId);
+            if (product) {
+                item.image = product.image; // Use fresh path from DB
+                item.price = product.price;
+            }
+            return item;
+        }));
+
+        const total = refreshedCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        res.render('cart', { 
+            cart: refreshedCart, 
+            total,
+            user: req.session.user 
+        });
+    } catch (err) {
+        res.status(500).send("Error loading cart");
+    }
 };
 
 // Handle adding items to the cart and deducting stock immediately

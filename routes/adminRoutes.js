@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const multer = require('multer');
 const path = require('path');
+const Product = require('../models/Product');
 
 // Multer configuration for product image uploads
 const storage = multer.diskStorage({
@@ -30,7 +31,6 @@ router.post('/admin/delete/:id', isAdmin, adminController.deleteProduct);
 router.post('/admin/toggle-status/:id', isAdmin, adminController.toggleProductStatus);
 router.get('/admin/edit/:id', isAdmin, async (req, res) => {
     try {
-        const Product = require('../models/Product');
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).send('Product not found');
         res.render('edit-product', { product });

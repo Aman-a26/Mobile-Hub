@@ -53,6 +53,17 @@ exports.getDashboard = async (req, res) => {
     }
 };
 
+// Fetch a single product's details for the "Big Screen" Quick View
+exports.getProductDetails = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching product details" });
+    }
+};
+
 // Checkout logic: Convert cart items into a permanent Order
 exports.checkout = async (req, res) => {
     if (!req.session.user) return res.status(401).redirect('/login');
@@ -67,7 +78,8 @@ exports.checkout = async (req, res) => {
             product: item.productId, // Links to the Product model ID
             name: item.name,
             quantity: item.qty,
-            price: item.price
+            price: item.price,
+            image: item.image
         }));
 
         const order = await Order.create({
@@ -94,7 +106,9 @@ exports.getMyOrders = async (req, res) => {
     if (!req.session.user) return res.redirect('/login');
     
     try {
-        const orders = await Order.find({ user: req.session.user.id }).sort({ createdAt: -1 });
+        const orders = await Order.find({ user: req.session.user.id })
+            .populate('items.product')
+            .sort({ createdAt: -1 });
         res.render('my-orders', { orders });
     } catch (err) {
         console.error("My Orders Error:", err);

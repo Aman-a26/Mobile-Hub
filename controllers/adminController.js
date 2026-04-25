@@ -42,7 +42,8 @@ exports.addProduct = async (req, res) => {
             specs: { storage, ram }, // Structured for mobile data
             stock,
             category,
-            image: req.file ? `uploads/${req.file.filename}` : 'image/default-phone.jpg'
+            active: true, // Make visible to users immediately
+            image: req.file ? `/uploads/${req.file.filename}` : '/image/default-phone.jpg'
         });
         
         res.redirect('/admin-dashboard');
@@ -93,7 +94,7 @@ exports.editProduct = async (req, res) => {
 
         // If a new image was uploaded, update the image field
         if (req.file) {
-            updateData.image = `uploads/${req.file.filename}`;
+            updateData.image = `/uploads/${req.file.filename}`;
         }
 
         await Product.findByIdAndUpdate(req.params.id, updateData);
