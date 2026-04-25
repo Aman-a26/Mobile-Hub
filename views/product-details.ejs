@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #020617; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .accent-gradient { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+    </style>
+    <title><%= product.name %> | Details</title>
+</head>
+<body class="min-h-screen antialiased">
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation (Minimal) -->
+    <nav class="px-8 py-6">
+        <div class="max-w-7xl mx-auto">
+            <a href="/user-dashboard" class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-gray-500 hover:text-cyan-400 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+                </svg>
+                Return to Inventory
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- Visuals -->
+            <div class="glass-card rounded-[3rem] p-12 flex items-center justify-center relative group">
+                <div class="absolute inset-0 bg-cyan-500/5 rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <img src="<%= product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default-phone.jpg' %>" 
+                     alt="<%= product.name %>" 
+                     class="max-h-[500px] w-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform group-hover:scale-105 transition-transform duration-700">
+            </div>
+
+            <!-- Data -->
+            <div class="space-y-6">
+                <div>
+                    <span class="text-cyan-500 font-black tracking-[0.3em] uppercase text-[10px] px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20">
+                        <%= product.brand %>
+                    </span>
+                    <h1 class="text-6xl font-black tracking-tighter text-white mt-6 leading-none"><%= product.name %></h1>
+                </div>
+
+                <div class="flex items-baseline gap-2">
+                    <span class="text-4xl font-black italic text-cyan-400"><%= currencySymbol %><%= formatPrice(product.price) %></span>
+                </div>
+
+                <div class="pt-4">
+                    <p class="text-gray-400 text-sm leading-relaxed"><%= product.description %></p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-8">
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Capacity</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.storage %></p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Memory</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.ram %></p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Processor</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.processor || 'N/A' %></p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Camera</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.camera || 'N/A' %></p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Battery</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.battery || 'N/A' %></p>
+                    </div>
+                    <div class="bg-slate-900/40 border border-white/5 p-6 rounded-3xl">
+                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-1">Display</p>
+                        <p class="text-white text-xl font-bold"><%= product.specs.screen || 'N/A' %></p>
+                    </div>
+                </div>
+
+                <div class="pt-8 space-y-4">
+                    <% if (product.stock > 0) { %>
+                        <button onclick="addToCart('<%= product._id %>')"
+                            class="w-full py-5 accent-gradient text-slate-950 font-black uppercase tracking-widest text-xs rounded-2xl shadow-lg shadow-cyan-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 100-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 004.97 1H3z" />
+                            </svg>
+                            Initialize Acquisition
+                        </button>
+                        <div class="flex items-center justify-center gap-2 text-gray-500">
+                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest"><%= product.stock %> units in local buffer</p>
+                        </div>
+                    <% } else { %>
+                        <button disabled class="w-full py-5 bg-slate-800 text-slate-500 font-black uppercase tracking-widest text-xs rounded-2xl cursor-not-allowed border border-white/5">
+                            Inventory Depleted
+                        </button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    async function addToCart(productId) {
+        try {
+            const response = await fetch('/add-to-cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = '/cart';
+            } else {
+                alert(data.message);
+            }
+        } catch (err) {
+            alert('Connection failure');
+        }
+    }
+    </script>
+</body>
+</html>

@@ -53,14 +53,19 @@ exports.getDashboard = async (req, res) => {
     }
 };
 
-// Fetch a single product's details for the "Big Screen" Quick View
+// Fetch a single product's details and render the product page
 exports.getProductDetails = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: "Product not found" });
-        res.json(product);
+        if (!product) return res.status(404).render('404', { title: "Product Not Found" });
+        
+        res.render('product-details', { 
+            product,
+            user: req.session.user
+        });
     } catch (err) {
-        res.status(500).json({ message: "Error fetching product details" });
+        console.error("Product Details Error:", err);
+        res.status(500).send("Error loading product details");
     }
 };
 

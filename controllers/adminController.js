@@ -33,13 +33,14 @@ exports.getAdminDashboard = async (req, res) => {
 // Logic to add a new mobile device with technical specs
 exports.addProduct = async (req, res) => {
     try {
-        const { name, brand, price, storage, ram, stock, category } = req.body;
+        const { name, brand, price, description, storage, ram, processor, camera, battery, screen, stock, category } = req.body;
         
         await Product.create({
             name,
             brand,
             price,
-            specs: { storage, ram }, // Structured for mobile data
+            description,
+            specs: { storage, ram, processor, camera, battery, screen }, // Structured for mobile data
             stock,
             category,
             active: true, // Make visible to users immediately
@@ -82,12 +83,13 @@ exports.toggleProductStatus = async (req, res) => {
 // Logic to edit a product
 exports.editProduct = async (req, res) => {
     try {
-        const { name, brand, price, storage, ram, stock, category } = req.body;
+        const { name, brand, price, description, storage, ram, processor, camera, battery, screen, stock, category } = req.body;
         const updateData = {
             name,
             brand,
             price,
-            specs: { storage, ram },
+            description,
+            specs: { storage, ram, processor, camera, battery, screen },
             stock,
             category
         };

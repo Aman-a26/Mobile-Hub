@@ -11,7 +11,10 @@ const productSchema = new mongoose.Schema({
     specs: {
         storage: { type: String }, // e.g., "128GB"
         ram: { type: String },     // e.g., "8GB"
-        screen: { type: String }   // e.g., "6.1-inch OLED"
+        screen: { type: String },  // e.g., "6.1-inch OLED"
+        processor: { type: String },
+        camera: { type: String },
+        battery: { type: String }
     },
     stock: { type: Number, default: 10 },
     active: { type: Boolean, default: true }

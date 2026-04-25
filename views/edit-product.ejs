@@ -78,9 +78,15 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="field-label">Product Description</label>
+                    <textarea name="description" rows="3"
+                        class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white"><%= product.description %></textarea>
+                </div>
+
                 <div class="p-8 bg-slate-950/50 rounded-[2rem] border border-white/5 space-y-6">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-500/50">Technical Specifications</p>
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="field-label">Storage</label>
                             <input type="text" name="storage" value="<%= product.specs.storage %>" required 
@@ -89,6 +95,26 @@
                         <div>
                             <label class="field-label">RAM</label>
                             <input type="text" name="ram" value="<%= product.specs.ram %>" required 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white">
+                        </div>
+                        <div>
+                            <label class="field-label">Processor</label>
+                            <input type="text" name="processor" value="<%= product.specs.processor %>" 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white">
+                        </div>
+                        <div>
+                            <label class="field-label">Camera</label>
+                            <input type="text" name="camera" value="<%= product.specs.camera %>" 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white">
+                        </div>
+                        <div>
+                            <label class="field-label">Battery</label>
+                            <input type="text" name="battery" value="<%= product.specs.battery %>" 
+                                class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white">
+                        </div>
+                        <div>
+                            <label class="field-label">Display</label>
+                            <input type="text" name="screen" value="<%= product.specs.screen %>" 
                                 class="w-full bg-slate-900/40 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none input-glow transition-all focus:bg-slate-900/60 text-white">
                         </div>
                     </div>

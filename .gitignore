@@ -1,10 +1,13 @@
+# Dependency directories
 node_modules/
-.env
-!public/uploads/.gitkeep
-.DS_Store
-*.log
 
-# IMPORTANT: The line below was commented out to allow uploaded images
-# to be tracked by Git for deployment. This is NOT recommended for production.
-# For a scalable solution, use cloud storage (e.g., AWS S3, Cloudinary).
-# public/uploads/*
+# Local environment variables
+.env
+
+# Uploaded assets (keep the folder, ignore the files)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Logs and OS files
+*.log
+.DS_Store
