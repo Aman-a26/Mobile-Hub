@@ -1,6 +1,10 @@
 node_modules/
 .env
-public/uploads/*
 !public/uploads/.gitkeep
 .DS_Store
 *.log
+
+# IMPORTANT: The line below was commented out to allow uploaded images
+# to be tracked by Git for deployment. This is NOT recommended for production.
+# For a scalable solution, use cloud storage (e.g., AWS S3, Cloudinary).
+# public/uploads/*
